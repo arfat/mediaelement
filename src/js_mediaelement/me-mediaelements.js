@@ -96,7 +96,7 @@ mejs.PluginMediaElement.prototype = {
 
 	// HTML5 methods
 	play: function () {
-		if (this.pluginApi != null) {
+		if (this.pluginApi) {
 			if (this.pluginType == 'youtube') {
 				this.pluginApi.playVideo();
 			} else {
@@ -106,7 +106,7 @@ mejs.PluginMediaElement.prototype = {
 		}
 	},
 	load: function () {
-		if (this.pluginApi != null) {
+		if (this.pluginApi) {
 			if (this.pluginType == 'youtube') {
 			} else {
 				this.pluginApi.loadMedia();
@@ -116,7 +116,7 @@ mejs.PluginMediaElement.prototype = {
 		}
 	},
 	pause: function () {
-		if (this.pluginApi != null) {
+		if (this.pluginApi) {
 			if (this.pluginType == 'youtube') {
 				this.pluginApi.pauseVideo();
 			} else {
@@ -128,7 +128,7 @@ mejs.PluginMediaElement.prototype = {
 		}
 	},
 	stop: function () {
-		if (this.pluginApi != null) {
+		if (this.pluginApi) {
 			if (this.pluginType == 'youtube') {
 				this.pluginApi.stopVideo();
 			} else {
@@ -163,13 +163,13 @@ mejs.PluginMediaElement.prototype = {
 	},
 
 	positionFullscreenButton: function(x,y,visibleAndAbove) {
-		if (this.pluginApi != null && this.pluginApi.positionFullscreenButton) {
+		if (this.pluginApi && this.pluginApi.positionFullscreenButton) {
 			this.pluginApi.positionFullscreenButton(Math.floor(x),Math.floor(y),visibleAndAbove);
 		}
 	},
 
 	hideFullscreenButton: function() {
-		if (this.pluginApi != null && this.pluginApi.hideFullscreenButton) {
+		if (this.pluginApi && this.pluginApi.hideFullscreenButton) {
 			this.pluginApi.hideFullscreenButton();
 		}
 	},
@@ -198,7 +198,7 @@ mejs.PluginMediaElement.prototype = {
 
 	},
 	setCurrentTime: function (time) {
-		if (this.pluginApi != null) {
+		if (this.pluginApi) {
 			if (this.pluginType == 'youtube') {
 				this.pluginApi.seekTo(time);
 			} else {
@@ -211,7 +211,7 @@ mejs.PluginMediaElement.prototype = {
 		}
 	},
 	setVolume: function (volume) {
-		if (this.pluginApi != null) {
+		if (this.pluginApi) {
 			// same on YouTube and MEjs
 			if (this.pluginType == 'youtube') {
 				this.pluginApi.setVolume(volume * 100);
@@ -222,7 +222,7 @@ mejs.PluginMediaElement.prototype = {
 		}
 	},
 	setMuted: function (muted) {
-		if (this.pluginApi != null) {
+		if (this.pluginApi) {
 			if (this.pluginType == 'youtube') {
 				if (muted) {
 					this.pluginApi.mute();
@@ -244,26 +244,26 @@ mejs.PluginMediaElement.prototype = {
 			this.pluginElement.style.width = width + 'px';
 			this.pluginElement.style.height = height + 'px';
 		}
-		if (this.pluginApi != null && this.pluginApi.setVideoSize) {
+		if (this.pluginApi && this.pluginApi.setVideoSize) {
 			this.pluginApi.setVideoSize(width, height);
 		}
 	},
 
 	setFullscreen: function (fullscreen) {
-		if (this.pluginApi != null && this.pluginApi.setFullscreen) {
+		if (this.pluginApi && this.pluginApi.setFullscreen) {
 			this.pluginApi.setFullscreen(fullscreen);
 		}
 	},
 
 	enterFullScreen: function() {
-		if (this.pluginApi != null && this.pluginApi.setFullscreen) {
+		if (this.pluginApi && this.pluginApi.setFullscreen) {
 			this.setFullscreen(true);
 		}
 
 	},
 
 	exitFullScreen: function() {
-		if (this.pluginApi != null && this.pluginApi.setFullscreen) {
+		if (this.pluginApi && this.pluginApi.setFullscreen) {
 			this.setFullscreen(false);
 		}
 	},

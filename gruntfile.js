@@ -14,21 +14,17 @@ module.exports = function(grunt) {
 		},
 		jshint: {
 			options: {
-				'-W099': true, //mixed spaces and tabs
-				eqeqeq: false,
-				eqnull: true,
-				laxbreak: true,
-				browser: true,
-				globals: {
-					glam: true
-				},
+				smarttabs: true, //mixed spaces and tabs
 			},
 			mediaelement: ['<%= concat.mediaelement.src %>']
 		},
 		concat: {
 			mediaelement: {
 				options: {
-					banner: 'glam.create.define("mediaelement", function() {',
+					banner: '/*======================================================*\r\n'+
+							' * BUILT VIA MEDIAELEMENT REPOSITORY - DO NOT EDIT HERE *\r\n'+
+							' *======================================================*/\r\n'+
+							'glam.create.define("mediaelement", function() {',
 					footer: 'return mejs;});'
 				},
 				src: [

@@ -71,11 +71,11 @@ mejs.Utility = {
 			minutes = Math.floor(time / 60) % 60,
 			seconds = Math.floor(time % 60),
 			frames = Math.floor(((time % 1)*fps).toFixed(3)),
-			result =
-					( (forceHours || hours > 0) ? (hours < 10 ? '0' + hours : hours) + ':' : '')
-						+ (minutes < 10 ? '0' + minutes : minutes) + ':'
-						+ (seconds < 10 ? '0' + seconds : seconds)
-						+ ((showFrameCount) ? ':' + (frames < 10 ? '0' + frames : frames) : '');
+			result = ( (forceHours || hours > 0) ? (hours < 10 ? '0' + hours : hours) + ':' : '') +
+				(minutes < 10 ? '0' + minutes : minutes) +
+				':' +
+				(seconds < 10 ? '0' + seconds : seconds) +
+				((showFrameCount) ? ':' + (frames < 10 ? '0' + frames : frames) : '');
 
 		return result;
 	},

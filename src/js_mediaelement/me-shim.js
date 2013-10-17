@@ -145,7 +145,7 @@ mejs.HtmlMediaElementShim = {
 			tagName = htmlMediaElement.tagName.toLowerCase(),
 			isMediaTag = (tagName === 'audio' || tagName === 'video'),
 			src = (isMediaTag) ? htmlMediaElement.getAttribute('src') : htmlMediaElement.getAttribute('href'),
-			poster = htmlMediaElement.getAttribute('poster'),
+			poster = htmlMediaElement.getAttribute('poster') || '',
 			autoplay =  htmlMediaElement.getAttribute('autoplay'),
 			preload =  htmlMediaElement.getAttribute('preload'),
 			controls =  htmlMediaElement.getAttribute('controls'),
@@ -158,11 +158,10 @@ mejs.HtmlMediaElementShim = {
 		}
 
 		// clean up attributes
-		src = 		(typeof src == 'undefined' 	|| src === null || src === '') ? null : src;
-		poster =	(typeof poster == 'undefined' 	|| poster === null) ? '' : poster;
-		preload = 	(typeof preload == 'undefined' 	|| preload === null || preload === 'false') ? 'none' : preload;
-		autoplay = 	!(typeof autoplay == 'undefined' || autoplay === null || autoplay === 'false');
-		controls = 	!(typeof controls == 'undefined' || controls === null || controls === 'false');
+		src = src ? src : null;
+		preload = !preload || preload === 'false' ? 'none' : preload;
+		autoplay = autoplay && autoplay !== 'false';
+		controls = controls && controls !== 'false';
 
 		// test for HTML5 and plugin capabilities
 		playback = this.determinePlayback(htmlMediaElement, options, mejs.MediaFeatures.supportsMediaTag, isMediaTag, src);
@@ -276,10 +275,8 @@ mejs.HtmlMediaElementShim = {
 			}
 
 			for (i=0; i<mediaFiles.length; i++) {
-				// normal check
-				if (htmlMediaElement.canPlayType(mediaFiles[i].type).replace(/no/, '') !== ''
-					// special case for Mac/Safari 5.0.3 which answers '' to canPlayType('audio/mp3') but 'maybe' to canPlayType('audio/mpeg')
-					|| htmlMediaElement.canPlayType(mediaFiles[i].type.replace(/mp3/,'mpeg')).replace(/no/, '') !== '') {
+				// normal check and special case for Mac/Safari 5.0.3 which answers '' to canPlayType('audio/mp3') but 'maybe' to canPlayType('audio/mpeg')
+				if (htmlMediaElement.canPlayType(mediaFiles[i].type).replace(/no/, '') !== '' || htmlMediaElement.canPlayType(mediaFiles[i].type.replace(/mp3/,'mpeg')).replace(/no/, '') !== '') {
 					result.method = 'native';
 					result.url = mediaFiles[i].url;
 					break;
@@ -766,8 +763,7 @@ mejs.YouTubeApi = {
 			pluginMediaElement = settings.pluginMediaElement;
 
 		// hook up and return to MediaELementPlayer.success
-		pluginMediaElement.pluginApi =
-		pluginMediaElement.pluginElement = player;
+		pluginMediaElement.pluginApi = pluginMediaElement.pluginElement = player;
 		mejs.MediaPluginBridge.initPlugin(id);
 
 		// load the youtube video
