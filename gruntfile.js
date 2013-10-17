@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		dirs: {
 			src: 'src/',
-			js_src: '<%= dirs.src %>js/',
+			me_src: '<%= dirs.src %>js_mediaelement/',
 			output: 'dist/'
 		},
 		watch: {
@@ -32,12 +32,12 @@ module.exports = function(grunt) {
 					footer: 'return mejs;});'
 				},
 				src: [
-					'<%= dirs.js_src %>me-namespace.js',
-					'<%= dirs.js_src %>me-utility.js',
-					'<%= dirs.js_src %>me-plugindetector.js',
-					'<%= dirs.js_src %>me-featuredetection.js',
-					'<%= dirs.js_src %>me-mediaelements.js',
-					'<%= dirs.js_src %>me-shim.js',
+					'<%= dirs.me_src %>me-namespace.js',
+					'<%= dirs.me_src %>me-utility.js',
+					'<%= dirs.me_src %>me-plugindetector.js',
+					'<%= dirs.me_src %>me-featuredetection.js',
+					'<%= dirs.me_src %>me-mediaelements.js',
+					'<%= dirs.me_src %>me-shim.js',
 
 				],
 				dest: '<%= dirs.output %>mediaelement.js'

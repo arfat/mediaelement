@@ -2,7 +2,7 @@ glam.create.define("mediaelement", function() {// Namespace
 var mejs = mejs || {};
 
 // version number
-mejs.version = '2.13.1'; 
+mejs.version = '2.13.1';
 console.log('ME.js version', mejs.version);
 
 // player number (for missing, same id attr)
@@ -10,18 +10,12 @@ mejs.meIndex = 0;
 
 // media types accepted by plugins
 mejs.plugins = {
-	silverlight: [
-		{version: [3,0], types: ['video/mp4','video/m4v','video/mov','video/wmv','audio/wma','audio/m4a','audio/mp3','audio/wav','audio/mpeg']}
-	],
 	flash: [
 		{version: [9,0,124], types: ['video/mp4','video/m4v','video/mov','video/flv','video/rtmp','video/x-flv','audio/flv','audio/x-flv','audio/mp3','audio/m4a','audio/mpeg', 'video/youtube', 'video/x-youtube']}
 		//,{version: [12,0], types: ['video/webm']} // for future reference (hopefully!)
 	],
 	youtube: [
 		{version: null, types: ['video/youtube', 'video/x-youtube', 'audio/youtube', 'audio/x-youtube']}
-	],
-	vimeo: [
-		{version: null, types: ['video/vimeo', 'video/x-vimeo']}
 	]
 };
 
@@ -251,41 +245,6 @@ mejs.PluginDetector.addPlugin('flash','Shockwave Flash','application/x-shockwave
 	return version;
 });
 
-// Add Silverlight detection
-mejs.PluginDetector.addPlugin('silverlight','Silverlight Plug-In','application/x-silverlight-2','AgControl.AgControl', function (ax) {
-	// Silverlight cannot report its version number to IE
-	// but it does have a isVersionSupported function, so we have to loop through it to get a version number.
-	// adapted from http://www.silverlightversion.com/
-	var v = [0,0,0,0],
-		loopMatch = function(ax, v, i, n) {
-			while(ax.isVersionSupported(v[0]+ "."+ v[1] + "." + v[2] + "." + v[3])){
-				v[i]+=n;
-			}
-			v[i] -= n;
-		};
-	loopMatch(ax, v, 0, 1);
-	loopMatch(ax, v, 1, 1);
-	loopMatch(ax, v, 2, 10000); // the third place in the version number is usually 5 digits (4.0.xxxxx)
-	loopMatch(ax, v, 2, 1000);
-	loopMatch(ax, v, 2, 100);
-	loopMatch(ax, v, 2, 10);
-	loopMatch(ax, v, 2, 1);
-	loopMatch(ax, v, 3, 1);
-
-	return v;
-});
-// add adobe acrobat
-/*
-PluginDetector.addPlugin('acrobat','Adobe Acrobat','application/pdf','AcroPDF.PDF', function (ax) {
-	var version = [],
-		d = ax.GetVersions().split(',')[0].split('=')[1].split('.');
-
-	if (d) {
-		version = [parseInt(d[0], 10), parseInt(d[1], 10), parseInt(d[2], 10)];
-	}
-	return version;
-});
-*/
 // necessary detection (fixes for <IE9)
 mejs.MediaFeatures = {
 	init: function() {
@@ -450,14 +409,14 @@ mejs.HtmlMediaElement = {
 	// This can be a url string
 	// or an array [{src:'file.mp4',type:'video/mp4'},{src:'file.webm',type:'video/webm'}]
 	setSrc: function (url) {
-		
+
 		// Fix for IE9 which can't set .src when there are <source> elements. Awesome, right?
-		var 
+		var
 			existingSources = this.getElementsByTagName('source');
 		while (existingSources.length > 0){
 			this.removeChild(existingSources[0]);
 		}
-	
+
 		if (typeof url == 'string') {
 			this.src = url;
 		} else {
@@ -480,7 +439,7 @@ mejs.HtmlMediaElement = {
 };
 
 /*
-Mimics the <video/audio> element by calling Flash's External Interface or Silverlights [ScriptableMember]
+Mimics the <video/audio> element by calling Flash's External Interface
 */
 mejs.PluginMediaElement = function (pluginid, pluginType, mediaUrl) {
 	this.id = pluginid;
@@ -536,7 +495,7 @@ mejs.PluginMediaElement.prototype = {
 			} else {
 				this.pluginApi.loadMedia();
 			}
-			
+
 			this.paused = false;
 		}
 	},
@@ -546,9 +505,9 @@ mejs.PluginMediaElement.prototype = {
 				this.pluginApi.pauseVideo();
 			} else {
 				this.pluginApi.pauseMedia();
-			}			
-			
-			
+			}
+
+
 			this.paused = true;
 		}
 	},
@@ -558,7 +517,7 @@ mejs.PluginMediaElement.prototype = {
 				this.pluginApi.stopVideo();
 			} else {
 				this.pluginApi.stopMedia();
-			}	
+			}
 			this.paused = true;
 		}
 	},
@@ -586,19 +545,19 @@ mejs.PluginMediaElement.prototype = {
 
 		return '';
 	},
-	
+
 	positionFullscreenButton: function(x,y,visibleAndAbove) {
 		if (this.pluginApi != null && this.pluginApi.positionFullscreenButton) {
 			this.pluginApi.positionFullscreenButton(Math.floor(x),Math.floor(y),visibleAndAbove);
 		}
 	},
-	
+
 	hideFullscreenButton: function() {
 		if (this.pluginApi != null && this.pluginApi.hideFullscreenButton) {
 			this.pluginApi.hideFullscreenButton();
-		}		
-	},	
-	
+		}
+	},
+
 
 	// custom methods since not all JavaScript implementations support get/set
 
@@ -628,10 +587,10 @@ mejs.PluginMediaElement.prototype = {
 				this.pluginApi.seekTo(time);
 			} else {
 				this.pluginApi.setCurrentTime(time);
-			}				
-			
-			
-			
+			}
+
+
+
 			this.currentTime = time;
 		}
 	},
@@ -665,16 +624,13 @@ mejs.PluginMediaElement.prototype = {
 
 	// additional non-HTML5 methods
 	setVideoSize: function (width, height) {
-		
-		//if (this.pluginType == 'flash' || this.pluginType == 'silverlight') {
-			if ( this.pluginElement.style) {
-				this.pluginElement.style.width = width + 'px';
-				this.pluginElement.style.height = height + 'px';
-			}
-			if (this.pluginApi != null && this.pluginApi.setVideoSize) {
-				this.pluginApi.setVideoSize(width, height);
-			}
-		//}
+		if ( this.pluginElement.style) {
+			this.pluginElement.style.width = width + 'px';
+			this.pluginElement.style.height = height + 'px';
+		}
+		if (this.pluginApi != null && this.pluginApi.setVideoSize) {
+			this.pluginApi.setVideoSize(width, height);
+		}
 	},
 
 	setFullscreen: function (fullscreen) {
@@ -682,19 +638,19 @@ mejs.PluginMediaElement.prototype = {
 			this.pluginApi.setFullscreen(fullscreen);
 		}
 	},
-	
+
 	enterFullScreen: function() {
 		if (this.pluginApi != null && this.pluginApi.setFullscreen) {
 			this.setFullscreen(true);
-		}		
-		
+		}
+
 	},
-	
+
 	exitFullScreen: function() {
 		if (this.pluginApi != null && this.pluginApi.setFullscreen) {
 			this.setFullscreen(false);
 		}
-	},	
+	},
 
 	// start: fake events
 	addEventListener: function (eventName, callback, bubble) {
@@ -713,7 +669,7 @@ mejs.PluginMediaElement.prototype = {
 			}
 		}
 		return false;
-	},	
+	},
 	dispatchEvent: function (eventName) {
 		var i,
 			args,
@@ -727,10 +683,10 @@ mejs.PluginMediaElement.prototype = {
 		}
 	},
 	// end: fake events
-	
+
 	// fake DOM attribute methods
 	hasAttribute: function(name){
-		return (name in this.attributes);  
+		return (name in this.attributes);
 	},
 	removeAttribute: function(name){
 		delete this.attributes[name];
@@ -751,7 +707,7 @@ mejs.PluginMediaElement.prototype = {
 	}
 };
 
-// Handles calls from Flash/Silverlight and reports them as native <video/audio> events and properties
+// Handles calls from Flash and reports them as native <video/audio> events and properties
 mejs.MediaPluginBridge = {
 
 	pluginMediaElements:{},
@@ -767,7 +723,7 @@ mejs.MediaPluginBridge = {
 		delete this.htmlMediaElements[id];
 	},
 
-	// when Flash/Silverlight is ready, it calls out to this method
+	// when Flash is ready, it calls out to this method
 	initPlugin: function (id) {
 
 		var pluginMediaElement = this.pluginMediaElements[id],
@@ -779,19 +735,15 @@ mejs.MediaPluginBridge = {
 				case "flash":
 					pluginMediaElement.pluginElement = pluginMediaElement.pluginApi = document.getElementById(id);
 					break;
-				case "silverlight":
-					pluginMediaElement.pluginElement = document.getElementById(pluginMediaElement.id);
-					pluginMediaElement.pluginApi = pluginMediaElement.pluginElement.Content.MediaElementJS;
-					break;
 			}
 
-			if (pluginMediaElement.pluginApi != null && pluginMediaElement.success) {
+			if (pluginMediaElement.pluginApi !== null && pluginMediaElement.success) {
 				pluginMediaElement.success(pluginMediaElement, htmlMediaElement);
 			}
 		}
 	},
 
-	// receives events from Flash/Silverlight and sends them out as HTML5 media events
+	// receives events from Flash and sends them out as HTML5 media events
 	// http://www.whatwg.org/specs/web-apps/current-work/multipage/video.html
 	fireEvent: function (id, eventName, values) {
 
@@ -838,22 +790,22 @@ mejs.MediaPluginBridge = {
 Default options
 */
 mejs.MediaElementDefaults = {
-	// allows testing on HTML5, flash, silverlight
+	// allows testing on HTML5, flash
 	// auto: attempts to detect what the browser can do
 	// auto_plugin: prefer plugins and then attempt native HTML5
 	// native: forces HTML5 playback
-	// shim: disallows HTML5, will attempt either Flash or Silverlight
+	// shim: disallows HTML5, will attempt Flash
 	// none: forces fallback view
 	mode: 'auto',
 	// remove or reorder to change plugin priority and availability
-	plugins: ['flash','silverlight','youtube','vimeo'],
+	plugins: ['flash','youtube'],
 	// shows debug errors on screen
 	enablePluginDebug: false,
 	// use plugin for browsers that have trouble with Basic Authentication on HTTPS sites
 	httpsBasicAuthSite: false,
 	// overrides the type specified, useful for dynamic instantiation
 	type: '',
-	// path to Flash and Silverlight plugins
+	// path to Flash plugins
 	pluginPath: mejs.Utility.getScriptPath(['mediaelement.js','mediaelement.min.js','mediaelement-and-player.js','mediaelement-and-player.min.js']),
 	// name of flash file
 	flashName: 'flashmediaelement.swf',
@@ -865,8 +817,6 @@ mejs.MediaElementDefaults = {
 	enablePseudoStreaming: false,
 	// start query parameter sent to server for pseudo-streaming
 	pseudoStreamingStartQueryParam: 'start',
-	// name of silverlight file
-	silverlightName: 'silverlightmediaelement.xap',
 	// default if the <video width> is not specified
 	defaultVideoWidth: 480,
 	// default if the <video height> is not specified
@@ -877,7 +827,7 @@ mejs.MediaElementDefaults = {
 	pluginHeight: -1,
 	// additional plugin variables in 'key=value' form
 	pluginVars: [],
-	// rate in milliseconds for Flash and Silverlight to fire the timeupdate event
+	// rate in milliseconds for Flash  to fire the timeupdate event
 	// larger number is less accurate, but less strain on plugin->JavaScript bridge
 	timerRate: 250,
 	// initial volume for player
@@ -888,7 +838,7 @@ mejs.MediaElementDefaults = {
 
 /*
 Determines if a browser supports the <video> or <audio> element
-and returns either the native element or a Flash/Silverlight version that
+and returns either the native element or a Flash version that
 mimics HTML5 MediaElement
 */
 mejs.MediaElement = function (el, o) {
@@ -943,7 +893,7 @@ mejs.HtmlMediaElementShim = {
 
 			return this.createPlugin( playback,  options, poster, autoplay, preload, controls);
 		} else {
-			// boo, no HTML5, no Flash, no Silverlight.
+			// boo, no HTML5, no Flash
 			options.error();
 
 			return this;
@@ -1062,7 +1012,7 @@ mejs.HtmlMediaElementShim = {
 			for (i=0; i<mediaFiles.length; i++) {
 				type = mediaFiles[i].type;
 
-				// test all plugins in order of preference [silverlight, flash]
+				// test all plugins in order of preference [ flash]
 				for (j=0; j<options.plugins.length; j++) {
 
 					pluginName = options.plugins[j];
@@ -1076,9 +1026,7 @@ mejs.HtmlMediaElementShim = {
 						// test if user has the correct plugin version
 
 						// for youtube/vimeo
-						if (pluginInfo.version == null ||
-
-							mejs.PluginDetector.hasPluginVersion(pluginName, pluginInfo.version)) {
+						if (pluginInfo.version === null || mejs.PluginDetector.hasPluginVersion(pluginName, pluginInfo.version)) {
 
 							// test for plugin playback types
 							for (l=0; l<pluginInfo.types.length; l++) {
@@ -1215,7 +1163,7 @@ mejs.HtmlMediaElementShim = {
 				document.body.insertBefore(container, document.body.childNodes[0]);
 		}
 
-		// flash/silverlight vars
+		// flash vars
 		initVars = [
 			'id=' + pluginid,
 			'isvideo=' + ((playback.isVideo) ? "true" : "false"),
@@ -1226,7 +1174,7 @@ mejs.HtmlMediaElementShim = {
 			'timerrate=' + options.timerRate,
 			'flashstreamer=' + options.flashStreamer,
 			'height=' + height,
-      'pseudostreamstart=' + options.pseudoStreamingStartQueryParam];
+			'pseudostreamstart=' + options.pseudoStreamingStartQueryParam];
 
 		if (playback.url !== null) {
 			if (playback.method == 'flash') {
@@ -1252,18 +1200,6 @@ mejs.HtmlMediaElementShim = {
 		}
 
 		switch (playback.method) {
-			case 'silverlight':
-				container.innerHTML =
-'<object data="data:application/x-silverlight-2," type="application/x-silverlight-2" id="' + pluginid + '" name="' + pluginid + '" width="' + width + '" height="' + height + '" class="mejs-shim">' +
-'<param name="initParams" value="' + initVars.join(',') + '" />' +
-'<param name="windowless" value="true" />' +
-'<param name="background" value="black" />' +
-'<param name="minRuntimeVersion" value="3.0.0.0" />' +
-'<param name="autoUpgrade" value="true" />' +
-'<param name="source" value="' + options.pluginPath + options.silverlightName + '" />' +
-'</object>';
-					break;
-
 			case 'flash':
 
 				if (mejs.MediaFeatures.isIE) {
@@ -1302,10 +1238,7 @@ mejs.HtmlMediaElementShim = {
 				break;
 
 			case 'youtube':
-
-
-				var
-					videoId = playback.url.substr(playback.url.lastIndexOf('=')+1);
+				var videoId = playback.url.substr(playback.url.lastIndexOf('=')+1);
 					youtubeSettings = {
 						container: container,
 						containerId: container.id,
@@ -1321,27 +1254,6 @@ mejs.HtmlMediaElementShim = {
 				} else {
 					mejs.YouTubeApi.enqueueIframe(youtubeSettings);
 				}
-
-				break;
-
-			// DEMO Code. Does NOT work.
-			case 'vimeo':
-				//console.log('vimeoid');
-
-				pluginMediaElement.vimeoid = playback.url.substr(playback.url.lastIndexOf('/')+1);
-
-				container.innerHTML ='<iframe src="http://player.vimeo.com/video/' + pluginMediaElement.vimeoid + '?portrait=0&byline=0&title=0" width="' + width +'" height="' + height +'" frameborder="0" class="mejs-shim"></iframe>';
-
-				/*
-				container.innerHTML =
-					'<object width="' + width + '" height="' + height + '" class="mejs-shim">' +
-						'<param name="allowfullscreen" value="true" />' +
-						'<param name="allowscriptaccess" value="always" />' +
-						'<param name="flashvars" value="api=1" />' +
-						'<param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=' + pluginMediaElement.vimeoid  + '&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" />' +
-						'<embed src="//vimeo.com/moogaloop.swf?api=1&amp;clip_id=' + pluginMediaElement.vimeoid + '&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="' + width + '" height="' + height + '" class="mejs-shim"></embed>' +
-					'</object>';
-					*/
 
 				break;
 		}
@@ -1626,7 +1538,4 @@ function onYouTubePlayerAPIReady() {
 function onYouTubePlayerReady(id) {
 	mejs.YouTubeApi.flashReady(id);
 }
-
-window.mejs = mejs;
-window.MediaElement = mejs.MediaElement;
 return mejs;});

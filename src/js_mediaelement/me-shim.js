@@ -829,6 +829,3 @@ function onYouTubePlayerAPIReady() {
 function onYouTubePlayerReady(id) {
 	mejs.YouTubeApi.flashReady(id);
 }
-
-window.mejs = mejs;
-window.MediaElement = mejs.MediaElement;
