@@ -62,9 +62,9 @@ mejs.Utility = {
 	secondsToTimeCode: function(time, forceHours, showFrameCount, fps) {
 		//add framecount
 		if (typeof showFrameCount == 'undefined') {
-		    showFrameCount=false;
+			showFrameCount=false;
 		} else if(typeof fps == 'undefined') {
-		    fps = 25;
+			fps = 25;
 		}
 
 		var hours = Math.floor(time / 3600) % 24,
@@ -82,9 +82,9 @@ mejs.Utility = {
 
 	timeCodeToSeconds: function(hh_mm_ss_ff, forceHours, showFrameCount, fps){
 		if (typeof showFrameCount == 'undefined') {
-		    showFrameCount=false;
+			showFrameCount=false;
 		} else if(typeof fps == 'undefined') {
-		    fps = 25;
+			fps = 25;
 		}
 
 		var tc_array = hh_mm_ss_ff.split(":"),
@@ -95,7 +95,7 @@ mejs.Utility = {
 			tc_in_seconds = 0;
 
 		if (showFrameCount) {
-		    tc_ff = parseInt(tc_array[3],10)/fps;
+			tc_ff = parseInt(tc_array[3],10)/fps;
 		}
 
 		tc_in_seconds = ( tc_hh * 3600 ) + ( tc_mm * 60 ) + tc_ss + tc_ff;

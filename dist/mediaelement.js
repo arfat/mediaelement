@@ -4,10 +4,6 @@
 glam.create.define("mediaelement", function() {// Namespace
 var mejs = mejs || {};
 
-// version number
-mejs.version = '2.13.1';
-console.log('ME.js version', mejs.version);
-
 // player number (for missing, same id attr)
 mejs.meIndex = 0;
 
@@ -86,9 +82,9 @@ mejs.Utility = {
 	secondsToTimeCode: function(time, forceHours, showFrameCount, fps) {
 		//add framecount
 		if (typeof showFrameCount == 'undefined') {
-		    showFrameCount=false;
+			showFrameCount=false;
 		} else if(typeof fps == 'undefined') {
-		    fps = 25;
+			fps = 25;
 		}
 
 		var hours = Math.floor(time / 3600) % 24,
@@ -106,9 +102,9 @@ mejs.Utility = {
 
 	timeCodeToSeconds: function(hh_mm_ss_ff, forceHours, showFrameCount, fps){
 		if (typeof showFrameCount == 'undefined') {
-		    showFrameCount=false;
+			showFrameCount=false;
 		} else if(typeof fps == 'undefined') {
-		    fps = 25;
+			fps = 25;
 		}
 
 		var tc_array = hh_mm_ss_ff.split(":"),
@@ -119,7 +115,7 @@ mejs.Utility = {
 			tc_in_seconds = 0;
 
 		if (showFrameCount) {
-		    tc_ff = parseInt(tc_array[3],10)/fps;
+			tc_ff = parseInt(tc_array[3],10)/fps;
 		}
 
 		tc_in_seconds = ( tc_hh * 3600 ) + ( tc_mm * 60 ) + tc_ss + tc_ff;
@@ -277,7 +273,7 @@ mejs.MediaFeatures = {
 
 		// borrowed from Modernizr
 		t.svg = !! document.createElementNS &&
-				!! document.createElementNS('http://www.w3.org/2000/svg','svg').createSVGRect;
+				!! document.createElementNS('http://www.w3.org/2000/svg','svg')['createSVGRect'];
 
 		// create HTML5 media elements for IE before 9, get a <video> element for fullscreen detection
 		for (i=0; i<html5Elements.length; i++) {
@@ -441,8 +437,9 @@ mejs.HtmlMediaElement = {
 	}
 };
 
-/*
-Mimics the <video/audio> element by calling Flash's External Interface
+/**
+ * Mimics the <video/audio> element by calling Flash's External Interface
+ * @constructor
 */
 mejs.PluginMediaElement = function (pluginid, pluginType, mediaUrl) {
 	this.id = pluginid;
@@ -665,7 +662,7 @@ mejs.PluginMediaElement.prototype = {
 		var callbacks = this.events[eventName];
 		if (!callbacks) return true;
 		if (!callback) { this.events[eventName] = []; return true; }
-		for (i = 0; i < callbacks.length; i++) {
+		for (var i = 0; i < callbacks.length; i++) {
 			if (callbacks[i] === callback) {
 				this.events[eventName].splice(i, 1);
 				return true;
@@ -773,7 +770,7 @@ mejs.MediaPluginBridge = {
 		}
 
 		// fake the newer W3C buffered TimeRange (loaded and total have been removed)
-		bufferedTime = values.bufferedTime || 0;
+		bufferedTime = values['bufferedTime'] || 0;
 
 		e.target.buffered = e.buffered = {
 			start: function(index) {
@@ -1238,7 +1235,7 @@ mejs.HtmlMediaElementShim = {
 				break;
 
 			case 'youtube':
-				var videoId = playback.url.substr(playback.url.lastIndexOf('=')+1);
+				var videoId = playback.url.substr(playback.url.lastIndexOf('=')+1),
 					youtubeSettings = {
 						container: container,
 						containerId: container.id,
@@ -1346,12 +1343,12 @@ mejs.YouTubeApi = {
 
 		var
 		pluginMediaElement = settings.pluginMediaElement,
-		player = new YT.Player(settings.containerId, {
-			height: settings.height,
-			width: settings.width,
-			videoId: settings.videoId,
-			playerVars: {controls:0},
-			events: {
+		player = new window['YT']['Player'](settings.containerId, {
+			'height': settings.height,
+			'width': settings.width,
+			'videoId': settings.videoId,
+			'playerVars': {'controls':0},
+			'events': {
 				'onReady': function() {
 
 					// hook up iframe object to MEjs
@@ -1479,7 +1476,7 @@ mejs.YouTubeApi = {
 		mejs.MediaPluginBridge.initPlugin(id);
 
 		// load the youtube video
-		player.cueVideoById(settings.videoId);
+		player['cueVideoById'](settings.videoId);
 
 		var callbackName = settings.containerId + '_callback';
 
@@ -1487,7 +1484,7 @@ mejs.YouTubeApi = {
 			mejs.YouTubeApi.handleStateChange(e, player, pluginMediaElement);
 		};
 
-		player.addEventListener('onStateChange', callbackName);
+		player['addEventListener']('onStateChange', callbackName);
 
 		setInterval(function() {
 			mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'timeupdate');
@@ -1530,11 +1527,15 @@ mejs.YouTubeApi = {
 	}
 };
 // IFRAME
-function onYouTubePlayerAPIReady() {
+var oldYouTubePlayerAPIReady = window.onYouTubePlayerAPIReady;
+window.onYouTubePlayerAPIReady = function() {
 	mejs.YouTubeApi.iFrameReady();
-}
+	if(typeof oldYouTubePlayerAPIReady == 'function') oldYouTubePlayerAPIReady();
+};
+var oldYouTubePlayerReady = window.onYouTubePlayerReady;
 // FLASH
-function onYouTubePlayerReady(id) {
+window.onYouTubePlayerReady = function(id) {
 	mejs.YouTubeApi.flashReady(id);
-}
+	if(typeof oldYouTubePlayerReady == 'function') oldYouTubePlayerReady(id);
+};
 return mejs;});

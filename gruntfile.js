@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 		},
 		jshint: {
 			options: {
-				smarttabs: true, //mixed spaces and tabs
+				sub: true
 			},
 			mediaelement: ['<%= concat.mediaelement.src %>']
 		},

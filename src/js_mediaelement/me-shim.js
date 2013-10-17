@@ -61,7 +61,7 @@ mejs.MediaPluginBridge = {
 		}
 
 		// fake the newer W3C buffered TimeRange (loaded and total have been removed)
-		bufferedTime = values.bufferedTime || 0;
+		bufferedTime = values['bufferedTime'] || 0;
 
 		e.target.buffered = e.buffered = {
 			start: function(index) {
@@ -526,7 +526,7 @@ mejs.HtmlMediaElementShim = {
 				break;
 
 			case 'youtube':
-				var videoId = playback.url.substr(playback.url.lastIndexOf('=')+1);
+				var videoId = playback.url.substr(playback.url.lastIndexOf('=')+1),
 					youtubeSettings = {
 						container: container,
 						containerId: container.id,
@@ -634,12 +634,12 @@ mejs.YouTubeApi = {
 
 		var
 		pluginMediaElement = settings.pluginMediaElement,
-		player = new YT.Player(settings.containerId, {
-			height: settings.height,
-			width: settings.width,
-			videoId: settings.videoId,
-			playerVars: {controls:0},
-			events: {
+		player = new window['YT']['Player'](settings.containerId, {
+			'height': settings.height,
+			'width': settings.width,
+			'videoId': settings.videoId,
+			'playerVars': {'controls':0},
+			'events': {
 				'onReady': function() {
 
 					// hook up iframe object to MEjs
@@ -767,7 +767,7 @@ mejs.YouTubeApi = {
 		mejs.MediaPluginBridge.initPlugin(id);
 
 		// load the youtube video
-		player.cueVideoById(settings.videoId);
+		player['cueVideoById'](settings.videoId);
 
 		var callbackName = settings.containerId + '_callback';
 
@@ -775,7 +775,7 @@ mejs.YouTubeApi = {
 			mejs.YouTubeApi.handleStateChange(e, player, pluginMediaElement);
 		};
 
-		player.addEventListener('onStateChange', callbackName);
+		player['addEventListener']('onStateChange', callbackName);
 
 		setInterval(function() {
 			mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'timeupdate');
@@ -818,10 +818,14 @@ mejs.YouTubeApi = {
 	}
 };
 // IFRAME
-function onYouTubePlayerAPIReady() {
+var oldYouTubePlayerAPIReady = window.onYouTubePlayerAPIReady;
+window.onYouTubePlayerAPIReady = function() {
 	mejs.YouTubeApi.iFrameReady();
-}
+	if(typeof oldYouTubePlayerAPIReady == 'function') oldYouTubePlayerAPIReady();
+};
+var oldYouTubePlayerReady = window.onYouTubePlayerReady;
 // FLASH
-function onYouTubePlayerReady(id) {
+window.onYouTubePlayerReady = function(id) {
 	mejs.YouTubeApi.flashReady(id);
-}
+	if(typeof oldYouTubePlayerReady == 'function') oldYouTubePlayerReady(id);
+};

@@ -54,8 +54,9 @@ mejs.HtmlMediaElement = {
 	}
 };
 
-/*
-Mimics the <video/audio> element by calling Flash's External Interface
+/**
+ * Mimics the <video/audio> element by calling Flash's External Interface
+ * @constructor
 */
 mejs.PluginMediaElement = function (pluginid, pluginType, mediaUrl) {
 	this.id = pluginid;
@@ -278,7 +279,7 @@ mejs.PluginMediaElement.prototype = {
 		var callbacks = this.events[eventName];
 		if (!callbacks) return true;
 		if (!callback) { this.events[eventName] = []; return true; }
-		for (i = 0; i < callbacks.length; i++) {
+		for (var i = 0; i < callbacks.length; i++) {
 			if (callbacks[i] === callback) {
 				this.events[eventName].splice(i, 1);
 				return true;
