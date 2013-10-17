@@ -64,39 +64,3 @@ mejs.PluginDetector.addPlugin('flash','Shockwave Flash','application/x-shockwave
 	}
 	return version;
 });
-
-// Add Silverlight detection
-mejs.PluginDetector.addPlugin('silverlight','Silverlight Plug-In','application/x-silverlight-2','AgControl.AgControl', function (ax) {
-	// Silverlight cannot report its version number to IE
-	// but it does have a isVersionSupported function, so we have to loop through it to get a version number.
-	// adapted from http://www.silverlightversion.com/
-	var v = [0,0,0,0],
-		loopMatch = function(ax, v, i, n) {
-			while(ax.isVersionSupported(v[0]+ "."+ v[1] + "." + v[2] + "." + v[3])){
-				v[i]+=n;
-			}
-			v[i] -= n;
-		};
-	loopMatch(ax, v, 0, 1);
-	loopMatch(ax, v, 1, 1);
-	loopMatch(ax, v, 2, 10000); // the third place in the version number is usually 5 digits (4.0.xxxxx)
-	loopMatch(ax, v, 2, 1000);
-	loopMatch(ax, v, 2, 100);
-	loopMatch(ax, v, 2, 10);
-	loopMatch(ax, v, 2, 1);
-	loopMatch(ax, v, 3, 1);
-
-	return v;
-});
-// add adobe acrobat
-/*
-PluginDetector.addPlugin('acrobat','Adobe Acrobat','application/pdf','AcroPDF.PDF', function (ax) {
-	var version = [],
-		d = ax.GetVersions().split(',')[0].split('=')[1].split('.');
-
-	if (d) {
-		version = [parseInt(d[0], 10), parseInt(d[1], 10), parseInt(d[2], 10)];
-	}
-	return version;
-});
-*/
