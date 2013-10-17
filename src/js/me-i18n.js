@@ -121,7 +121,7 @@
                 case '!':
                     break;
                 // Escaped and placeholder.
-                case '%':
+                //case '%': //default will catch this anyway
                 default:
                     args[key] = '<em class="placeholder">' + i18n.methods.checkPlain(args[key]) + '</em>';
                     break;
@@ -188,7 +188,7 @@
             throw {
                 "name" : 'InvalidArgumentException',
                 "message" : 'First argument is either not a string or empty.'
-            }
+            };
         }
     };
 
@@ -202,6 +202,6 @@
 
     if ( typeof mejsL10n != 'undefined' ) {
         exports[mejsL10n.language] = mejsL10n.strings;
-    };
+    }
 
 }(mejs.i18n.locale.strings));
