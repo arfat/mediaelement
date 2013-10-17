@@ -191,7 +191,7 @@ mejs.HtmlMediaElementShim = {
 			return this.createPlugin( playback,  options, poster, autoplay, preload, controls);
 		} else {
 			// boo, no HTML5, no Flash, no Silverlight.
-			this.createErrorMessage( playback, options, poster );
+			options.error();
 
 			return this;
 		}
@@ -398,32 +398,6 @@ mejs.HtmlMediaElementShim = {
 			default:
 				return ext;
 		}
-	},
-
-	createErrorMessage: function(playback, options, poster) {
-		var
-			htmlMediaElement = playback.htmlMediaElement,
-			errorContainer = document.createElement('div');
-
-		errorContainer.className = 'me-cannotplay';
-
-		try {
-			errorContainer.style.width = htmlMediaElement.width + 'px';
-			errorContainer.style.height = htmlMediaElement.height + 'px';
-		} catch (e) {}
-
-    if (options.customError) {
-      errorContainer.innerHTML = options.customError;
-    } else {
-      errorContainer.innerHTML = (poster !== '') ?
-        '<a href="' + playback.url + '"><img src="' + poster + '" width="100%" height="100%" /></a>' :
-        '<a href="' + playback.url + '"><span>' + mejs.i18n.t('Download File') + '</span></a>';
-    }
-
-		htmlMediaElement.parentNode.insertBefore(errorContainer, htmlMediaElement);
-		htmlMediaElement.style.display = 'none';
-
-		options.error(htmlMediaElement);
 	},
 
 	createPlugin:function(playback, options, poster, autoplay, preload, controls) {
@@ -668,7 +642,7 @@ mejs.HtmlMediaElementShim = {
 		*/
 
 		// fire success code
-		options.success(htmlMediaElement, htmlMediaElement);
+		options.success(htmlMediaElement);
 
 		return htmlMediaElement;
 	}

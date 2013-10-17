@@ -32,21 +32,22 @@ module.exports = function(grunt) {
 					footer: 'return mejs;});'
 				},
 				src: [
-					//'<%= dirs.js_src %>me-header.js',
 					'<%= dirs.js_src %>me-namespace.js',
 					'<%= dirs.js_src %>me-utility.js',
 					'<%= dirs.js_src %>me-plugindetector.js',
 					'<%= dirs.js_src %>me-featuredetection.js',
 					'<%= dirs.js_src %>me-mediaelements.js',
 					'<%= dirs.js_src %>me-shim.js',
-					'<%= dirs.js_src %>me-i18n.js'
-					//'<%= dirs.src %>me-i18n-locale-de.js')
-					//'<%= dirs.src %>me-i18n-locale-zh.js')
+
 				],
 				dest: '<%= dirs.output %>mediaelement.js'
 			},
 
-			me_player: { //TODO: remove jquery
+			me_player: {
+				//TODO: remove jquery and add i18n to player
+				//'<%= dirs.js_src %>me-i18n.js'
+				//'<%= dirs.src %>me-i18n-locale-de.js')
+				//'<%= dirs.src %>me-i18n-locale-zh.js')
 				src: [
 					'<%= dirs.js_src %>mep-header.js',
 					'<%= dirs.js_src %>mep-library.js',
