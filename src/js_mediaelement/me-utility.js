@@ -132,11 +132,11 @@ mejs.Utility = {
 		if (obj && /object|embed/i.test(obj.nodeName)) {
 			if (mejs.MediaFeatures.isIE) {
 				obj.style.display = "none";
-				(function(){
+				(function this_fn(){
 					if (obj.readyState == 4) {
 						mejs.Utility.removeObjectInIE(id);
 					} else {
-						setTimeout(arguments.callee, 10);
+						setTimeout(this_fn, 10);
 					}
 				})();
 			} else {

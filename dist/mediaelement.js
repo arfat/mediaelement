@@ -152,11 +152,11 @@ mejs.Utility = {
 		if (obj && /object|embed/i.test(obj.nodeName)) {
 			if (mejs.MediaFeatures.isIE) {
 				obj.style.display = "none";
-				(function(){
+				(function this_fn(){
 					if (obj.readyState == 4) {
 						mejs.Utility.removeObjectInIE(id);
 					} else {
-						setTimeout(arguments.callee, 10);
+						setTimeout(this_fn, 10);
 					}
 				})();
 			} else {
@@ -1103,7 +1103,7 @@ mejs.HtmlMediaElementShim = {
 			htmlMediaElement = playback.htmlMediaElement,
 			width = 1,
 			height = 1,
-			pluginid = 'me_' + playback.method + '_' + (mejs.meIndex++),
+			pluginid = 'glm_me_' + playback.method + '_' + (mejs.meIndex++),
 			pluginMediaElement = new mejs.PluginMediaElement(pluginid, playback.method, playback.url),
 			container = document.createElement('div'),
 			specialIEContainer,
@@ -1186,9 +1186,9 @@ mejs.HtmlMediaElementShim = {
 		if (options.enablePluginSmoothing) {
 			initVars.push('smoothing=true');
 		}
-    if (options.enablePseudoStreaming) {
-      initVars.push('pseudostreaming=true');
-    }
+		if (options.enablePseudoStreaming) {
+			initVars.push('pseudostreaming=true');
+		}
 		if (controls) {
 			initVars.push('controls=true'); // shows controls in the plugin if desired
 		}
@@ -1203,34 +1203,35 @@ mejs.HtmlMediaElementShim = {
 					specialIEContainer = document.createElement('div');
 					container.appendChild(specialIEContainer);
 					specialIEContainer.outerHTML =
-'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab" ' +
-'id="' + pluginid + '" width="' + width + '" height="' + height + '" class="mejs-shim">' +
-'<param name="movie" value="' + options.pluginPath + options.flashName + '?x=' + (new Date()) + '" />' +
-'<param name="flashvars" value="' + initVars.join('&amp;') + '" />' +
-'<param name="quality" value="high" />' +
-'<param name="bgcolor" value="#000000" />' +
-'<param name="wmode" value="transparent" />' +
-'<param name="allowScriptAccess" value="always" />' +
-'<param name="allowFullScreen" value="true" />' +
-'</object>';
+						'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab" ' +
+							'id="' + pluginid + '" width="' + width + '" height="' + height + '" class="mejs-shim">' +
+							'<param name="movie" value="' + options.pluginPath + options.flashName + '?x=' + (new Date()) + '" />' +
+							'<param name="flashvars" value="' + initVars.join('&amp;') + '" />' +
+							'<param name="quality" value="high" />' +
+							'<param name="bgcolor" value="#000000" />' +
+							'<param name="wmode" value="transparent" />' +
+							'<param name="allowScriptAccess" value="always" />' +
+							'<param name="allowFullScreen" value="true" />' +
+						'</object>';
 
 				} else {
 
 					container.innerHTML =
-'<embed id="' + pluginid + '" name="' + pluginid + '" ' +
-'play="true" ' +
-'loop="false" ' +
-'quality="high" ' +
-'bgcolor="#000000" ' +
-'wmode="transparent" ' +
-'allowScriptAccess="always" ' +
-'allowFullScreen="true" ' +
-'type="application/x-shockwave-flash" pluginspage="//www.macromedia.com/go/getflashplayer" ' +
-'src="' + options.pluginPath + options.flashName + '" ' +
-'flashvars="' + initVars.join('&') + '" ' +
-'width="' + width + '" ' +
-'height="' + height + '" ' +
-'class="mejs-shim"></embed>';
+						'<embed id="' + pluginid + '" name="' + pluginid + '" ' +
+							'play="true" ' +
+							'loop="false" ' +
+							'quality="high" ' +
+							'bgcolor="#000000" ' +
+							'wmode="transparent" ' +
+							'allowScriptAccess="always" ' +
+							'allowFullScreen="true" ' +
+							'type="application/x-shockwave-flash" pluginspage="//www.macromedia.com/go/getflashplayer" ' +
+							'src="' + options.pluginPath + options.flashName + '" ' +
+							'flashvars="' + initVars.join('&') + '" ' +
+							'width="' + width + '" ' +
+							'height="' + height + '" ' +
+							'class="mejs-shim">' +
+						'</embed>';
 				}
 				break;
 
@@ -1448,19 +1449,19 @@ mejs.YouTubeApi = {
 			specialIEContainer = document.createElement('div');
 			settings.container.appendChild(specialIEContainer);
 			specialIEContainer.outerHTML = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab" ' +
-'id="' + settings.pluginId + '" width="' + settings.width + '" height="' + settings.height + '" class="mejs-shim">' +
-	'<param name="movie" value="' + youtubeUrl + '" />' +
-	'<param name="wmode" value="transparent" />' +
-	'<param name="allowScriptAccess" value="always" />' +
-	'<param name="allowFullScreen" value="true" />' +
-'</object>';
+				'id="' + settings.pluginId + '" width="' + settings.width + '" height="' + settings.height + '" class="mejs-shim">' +
+					'<param name="movie" value="' + youtubeUrl + '" />' +
+					'<param name="wmode" value="transparent" />' +
+					'<param name="allowScriptAccess" value="always" />' +
+					'<param name="allowFullScreen" value="true" />' +
+				'</object>';
 		} else {
-		settings.container.innerHTML =
-			'<object type="application/x-shockwave-flash" id="' + settings.pluginId + '" data="' + youtubeUrl + '" ' +
-				'width="' + settings.width + '" height="' + settings.height + '" style="visibility: visible; " class="mejs-shim">' +
-				'<param name="allowScriptAccess" value="always">' +
-				'<param name="wmode" value="transparent">' +
-			'</object>';
+			settings.container.innerHTML =
+				'<object type="application/x-shockwave-flash" id="' + settings.pluginId + '" data="' + youtubeUrl + '" ' +
+					'width="' + settings.width + '" height="' + settings.height + '" style="visibility: visible; " class="mejs-shim">' +
+					'<param name="allowScriptAccess" value="always">' +
+					'<param name="wmode" value="transparent">' +
+				'</object>';
 		}
 
 	},
