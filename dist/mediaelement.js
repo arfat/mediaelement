@@ -1004,9 +1004,13 @@ mejs.HtmlMediaElementShim = {
 	},
 
 	getTypeFromFile: function(url) {
-		url = url.split('?')[0];
-		var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
-		return (/(mp4|m4v|ogg|ogv|webm|webmv|flv|wmv|mpeg|mov)/gi.test(ext) ? 'video' : 'audio') + '/' + this.getTypeFromExtension(ext);
+		if(/(?:youtube\.com\/watch\?v=|youtu\.be\/)\w+/.test(url)) {
+			return 'video/youtube';
+		} else {
+			url = url.split('?')[0];
+			var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+			return (/(mp4|m4v|ogg|ogv|webm|webmv|flv|wmv|mpeg|mov)/gi.test(ext) ? 'video' : 'audio') + '/' + this.getTypeFromExtension(ext);
+		}
 	},
 
 	getTypeFromExtension: function(ext) {
@@ -1091,6 +1095,9 @@ mejs.HtmlMediaElementShim = {
 		}
 
 		// flash vars
+		/**
+		 * @TODO pass in mejs callback so we dont use a standard global
+		 */
 		initVars = [
 			'id=' + pluginid,
 			'isvideo=' + ((playback.isVideo) ? "true" : "false"),

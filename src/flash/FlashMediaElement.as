@@ -638,7 +638,6 @@ package
 				*/
 
 				// FLOATING MODE BOTTOM DISPLAY - similar to normal
-				trace("THAT WAY!");
 				_hoverTime.y=(_hoverTime.height/2)+1;
 				_hoverTime.x=0;
 				_controlBarBg.width = stage.stageWidth;
@@ -692,6 +691,8 @@ package
 			//_video.scaleX = stage.stageWidth / _stageWidth;
 			//_video.scaleY = stage.stageHeight / _stageHeight;
 			//positionControls();
+
+			_output.appendText("resizehandler " + stage.stageWidth.toString() + "x" + stage.stageHeight.toString() + "\n");
 
 			repositionVideo();
 		}

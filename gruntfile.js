@@ -4,11 +4,16 @@ module.exports = function(grunt) {
 		dirs: {
 			src: 'src/',
 			me_src: '<%= dirs.src %>js_mediaelement/',
+			swf_src: '<%= dirs.src %>flash/',
 			output: 'dist/',
 			flexpath: '/home/adamh/flex_sdk/'
 		},
 		watch: {
 			mediaelement: {
+				files: ['<%= swf_src %>**/*.as'],
+				tasks: ['shell:swf']
+			},
+			mediaelement_swf: {
 				files: ['<%= concat.mediaelement.src %>'],
 				tasks: ['concat:mediaelement']
 			}
