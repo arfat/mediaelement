@@ -4,7 +4,8 @@ module.exports = function(grunt) {
 		dirs: {
 			src: 'src/',
 			me_src: '<%= dirs.src %>js_mediaelement/',
-			output: 'dist/'
+			output: 'dist/',
+			flexpath: '/home/adamh/flex_sdk/'
 		},
 		watch: {
 			mediaelement: {
@@ -60,12 +61,18 @@ module.exports = function(grunt) {
 				],
 				dest: '<%= dirs.output %>mediaelementplayer.js'
 			}
-		}
+		},
+		shell: {
+			swf: {
+				command: '<%= dirs.flexpath %>bin/mxmlc -strict=false -warnings=true src/flash/FlashMediaElement.as -o dist/flashmediaelement.swf -library-path+="<%= dirs.flexpath %>lib" -include-libraries+=src/flash/flashmediaelement.swc -use-network=true -headless-server -static-link-runtime-shared-libraries'
+			}
+	    }
 	});
 
-	grunt.loadTasks('node_modules/grunt-contrib-watch/tasks');
-	grunt.loadTasks('node_modules/grunt-contrib-concat/tasks');
-	grunt.loadTasks('node_modules/grunt-contrib-jshint/tasks');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-concat');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-shell');
 
 	grunt.registerTask('default', ['jshint:mediaelement', 'concat:mediaelement']);
 };
