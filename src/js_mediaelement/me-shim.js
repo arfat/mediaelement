@@ -22,10 +22,8 @@ mejs.MediaPluginBridge = {
 
 		if (pluginMediaElement) {
 			// find the javascript bridge
-			switch (pluginMediaElement.pluginType) {
-				case "flash":
-					pluginMediaElement.pluginElement = pluginMediaElement.pluginApi = document.getElementById(id);
-					break;
+			if(pluginMediaElement.pluginType == 'flash') {
+				pluginMediaElement.pluginElement = pluginMediaElement.pluginApi = document.getElementById(id);
 			}
 
 			if (pluginMediaElement.pluginApi !== null && pluginMediaElement.success) {
@@ -160,8 +158,8 @@ mejs.HtmlMediaElementShim = {
 		// clean up attributes
 		src = src ? src : null;
 		preload = !preload || preload === 'false' ? 'none' : preload;
-		autoplay = autoplay && autoplay !== 'false';
-		controls = controls && controls !== 'false';
+		autoplay = autoplay !== null && autoplay !== 'false';
+		controls = controls !== null && controls !== 'false';
 
 		// test for HTML5 and plugin capabilities
 		playback = this.determinePlayback(htmlMediaElement, options, mejs.MediaFeatures.supportsMediaTag, isMediaTag, src);
@@ -313,8 +311,8 @@ mejs.HtmlMediaElementShim = {
 
 						// test if user has the correct plugin version
 
-						// for youtube/vimeo
-						if (pluginInfo.version === null || mejs.PluginDetector.hasPluginVersion(pluginName, pluginInfo.version)) {
+						// for youtube no version check
+						if (pluginInfo.version === null || (pluginName == 'flash' && glamFlash['majorVersion'] >= pluginInfo.version)) {
 
 							// test for plugin playback types
 							for (l=0; l<pluginInfo.types.length; l++) {
@@ -442,7 +440,7 @@ mejs.HtmlMediaElementShim = {
 		mejs.MediaPluginBridge.registerPluginElement(pluginid, pluginMediaElement, htmlMediaElement);
 
 		// add container (must be added to DOM before inserting HTML for IE)
-		container.className = 'me-plugin';
+		container.className = 'glm-mejs-plugin';
 		container.id = pluginid + '_container';
 
 		if (playback.isVideo) {
@@ -489,56 +487,38 @@ mejs.HtmlMediaElementShim = {
 
 		switch (playback.method) {
 			case 'flash':
+				var flash_html = glamFlash(options.pluginPath + options.flashName, width, height, 9, {
+						'id': pluginid,
+						'name': pluginid,
+						'flashvars': initVars.join('&amp;'),
+						'wmode': 'transparent',
+						'quality': 'high'
+					});
 
 				if (mejs.MediaFeatures.isIE) {
 					specialIEContainer = document.createElement('div');
 					container.appendChild(specialIEContainer);
-					specialIEContainer.outerHTML =
-						'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab" ' +
-							'id="' + pluginid + '" width="' + width + '" height="' + height + '" class="mejs-shim">' +
-							'<param name="movie" value="' + options.pluginPath + options.flashName + '?x=' + (new Date()) + '" />' +
-							'<param name="flashvars" value="' + initVars.join('&amp;') + '" />' +
-							'<param name="quality" value="high" />' +
-							'<param name="bgcolor" value="#000000" />' +
-							'<param name="wmode" value="transparent" />' +
-							'<param name="allowScriptAccess" value="always" />' +
-							'<param name="allowFullScreen" value="true" />' +
-						'</object>';
-
+					specialIEContainer.outerHTML = flash_html;
 				} else {
-
-					container.innerHTML =
-						'<embed id="' + pluginid + '" name="' + pluginid + '" ' +
-							'play="true" ' +
-							'loop="false" ' +
-							'quality="high" ' +
-							'bgcolor="#000000" ' +
-							'wmode="transparent" ' +
-							'allowScriptAccess="always" ' +
-							'allowFullScreen="true" ' +
-							'type="application/x-shockwave-flash" pluginspage="//www.macromedia.com/go/getflashplayer" ' +
-							'src="' + options.pluginPath + options.flashName + '" ' +
-							'flashvars="' + initVars.join('&') + '" ' +
-							'width="' + width + '" ' +
-							'height="' + height + '" ' +
-							'class="mejs-shim">' +
-						'</embed>';
+					container.innerHTML = flash_html;
 				}
+
+				container.childNodes[0].className = 'glm-mejs-shim';
 				break;
 
 			case 'youtube':
-				var videoId = playback.url.substr(playback.url.lastIndexOf('=')+1),
-					youtubeSettings = {
+				var youtubeSettings = {
 						container: container,
 						containerId: container.id,
 						pluginMediaElement: pluginMediaElement,
 						pluginId: pluginid,
-						videoId: videoId,
+						videoId: playback.url.substr(playback.url.lastIndexOf('=')+1),
 						height: height,
-						width: width
+						width: width,
+						controls: controls
 					};
 
-				if (mejs.PluginDetector.hasPluginVersion('flash', [10,0,0]) ) {
+				if (glamFlash['majorVersion'] >= 10) {
 					mejs.YouTubeApi.createFlash(youtubeSettings);
 				} else {
 					mejs.YouTubeApi.enqueueIframe(youtubeSettings);
@@ -561,39 +541,10 @@ mejs.HtmlMediaElementShim = {
 		var htmlMediaElement = playback.htmlMediaElement,
 			m;
 
-
 		// add methods to video object to bring it into parity with Flash Object
 		for (m in mejs.HtmlMediaElement) {
 			htmlMediaElement[m] = mejs.HtmlMediaElement[m];
 		}
-
-		/*
-		Chrome now supports preload="none"
-		if (mejs.MediaFeatures.isChrome) {
-
-			// special case to enforce preload attribute (Chrome doesn't respect this)
-			if (preload === 'none' && !autoplay) {
-
-				// forces the browser to stop loading (note: fails in IE9)
-				htmlMediaElement.src = '';
-				htmlMediaElement.load();
-				htmlMediaElement.canceledPreload = true;
-
-				htmlMediaElement.addEventListener('play',function() {
-					if (htmlMediaElement.canceledPreload) {
-						htmlMediaElement.src = playback.url;
-						htmlMediaElement.load();
-						htmlMediaElement.play();
-						htmlMediaElement.canceledPreload = false;
-					}
-				}, false);
-			// for some reason Chrome forgets how to autoplay sometimes.
-			} else if (autoplay) {
-				htmlMediaElement.load();
-				htmlMediaElement.play();
-			}
-		}
-		*/
 
 		// fire success code
 		options.success(htmlMediaElement);
@@ -639,7 +590,7 @@ mejs.YouTubeApi = {
 			'height': settings.height,
 			'width': settings.width,
 			'videoId': settings.videoId,
-			'playerVars': {'controls':0},
+			'playerVars': {'controls': settings.controls ? 1 : 0},
 			'events': {
 				'onReady': function() {
 
@@ -723,37 +674,27 @@ mejs.YouTubeApi = {
 
 		this.flashPlayers[settings.pluginId] = settings;
 
-		/*
-		settings.container.innerHTML =
-			'<object type="application/x-shockwave-flash" id="' + settings.pluginId + '" data="//www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=0&amp;modestbranding=1&loop=0" ' +
-				'width="' + settings.width + '" height="' + settings.height + '" style="visibility: visible; " class="mejs-shim">' +
-				'<param name="allowScriptAccess" value="always">' +
-				'<param name="wmode" value="transparent">' +
-			'</object>';
-		*/
-
 		var specialIEContainer,
-			youtubeUrl = '//www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=0&amp;modestbranding=1&loop=0';
+			youtubeUrl = !settings.controls ?
+				'//www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=0&amp;modestbranding=1&loop=0' :
+				'//www.youtube.com/v/'+settings.videoId+'?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=1&amp;modestbranding=1&loop=0';
+
+		var flash_html = glamFlash(youtubeUrl, settings.width, settings.height, 10, {
+				'id': settings.pluginId,
+				'name': settings.pluginId,
+				'wmode': 'transparent'
+			});
 
 		if (mejs.MediaFeatures.isIE) {
 
 			specialIEContainer = document.createElement('div');
 			settings.container.appendChild(specialIEContainer);
-			specialIEContainer.outerHTML = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab" ' +
-				'id="' + settings.pluginId + '" width="' + settings.width + '" height="' + settings.height + '" class="mejs-shim">' +
-					'<param name="movie" value="' + youtubeUrl + '" />' +
-					'<param name="wmode" value="transparent" />' +
-					'<param name="allowScriptAccess" value="always" />' +
-					'<param name="allowFullScreen" value="true" />' +
-				'</object>';
+			specialIEContainer.outerHTML = flash_html;
 		} else {
-			settings.container.innerHTML =
-				'<object type="application/x-shockwave-flash" id="' + settings.pluginId + '" data="' + youtubeUrl + '" ' +
-					'width="' + settings.width + '" height="' + settings.height + '" style="visibility: visible; " class="mejs-shim">' +
-					'<param name="allowScriptAccess" value="always">' +
-					'<param name="wmode" value="transparent">' +
-				'</object>';
+			settings.container.innerHTML = flash_html;
 		}
+
+		settings.container.childNodes[0].className = 'glm-mejs-shim';
 
 	},
 
@@ -768,7 +709,9 @@ mejs.YouTubeApi = {
 		mejs.MediaPluginBridge.initPlugin(id);
 
 		// load the youtube video
-		player['cueVideoById'](settings.videoId);
+		if(!settings.controls) {
+			player['cueVideoById'](settings.videoId);
+		}
 
 		var callbackName = settings.containerId + '_callback';
 

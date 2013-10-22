@@ -4,8 +4,8 @@ mejs.MediaFeatures = {
 		var
 			t = this,
 			d = document,
-			nav = mejs.PluginDetector.nav,
-			ua = mejs.PluginDetector.ua.toLowerCase(),
+			nav = window.navigator,
+			ua = nav.userAgent.toLowerCase(),
 			i,
 			v,
 			html5Elements = ['source','track','audio','video'];

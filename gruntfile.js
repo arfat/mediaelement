@@ -24,13 +24,13 @@ module.exports = function(grunt) {
 					banner: '/*======================================================*\r\n'+
 							' * BUILT VIA MEDIAELEMENT REPOSITORY - DO NOT EDIT HERE *\r\n'+
 							' *======================================================*/\r\n'+
-							'glam.create.define("mediaelement", function() {',
+							'glam.create.define("mediaelement", ["flash"], function(glamFlash) {',
 					footer: 'return mejs;});'
 				},
 				src: [
 					'<%= dirs.me_src %>me-namespace.js',
 					'<%= dirs.me_src %>me-utility.js',
-					'<%= dirs.me_src %>me-plugindetector.js',
+				//	'<%= dirs.me_src %>me-plugindetector.js',
 					'<%= dirs.me_src %>me-featuredetection.js',
 					'<%= dirs.me_src %>me-mediaelements.js',
 					'<%= dirs.me_src %>me-shim.js',

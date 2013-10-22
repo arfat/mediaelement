@@ -148,7 +148,7 @@ mejs.PluginMediaElement.prototype = {
 			pluginInfo = pluginVersions[i];
 
 			// test if user has the correct plugin version
-			if (mejs.PluginDetector.hasPluginVersion(this.pluginType, pluginInfo.version)) {
+			if (this.pluginType == 'flash' && glamFlash['majorVersion'] >= pluginInfo.version) {
 
 				// test for plugin playback types
 				for (j=0; j<pluginInfo.types.length; j++) {
