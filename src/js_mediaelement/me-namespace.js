@@ -13,3 +13,5 @@ mejs.plugins = {
 		{version: null, types: ['video/youtube', 'video/x-youtube', 'audio/youtube', 'audio/x-youtube']}
 	]
 };
+
+var pluginBridgeUniqueFn = 'glm_mejs_bridge_' + Math.floor(Math.random() * 1e6);

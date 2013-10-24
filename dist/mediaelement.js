@@ -17,6 +17,8 @@ mejs.plugins = {
 	]
 };
 
+var pluginBridgeUniqueFn = 'glm_mejs_bridge_' + Math.floor(Math.random() * 1e6);
+
 /*
 Utility methods
 */
@@ -640,7 +642,7 @@ mejs.PluginMediaElement.prototype = {
 };
 
 // Handles calls from Flash and reports them as native <video/audio> events and properties
-mejs.MediaPluginBridge = {
+window[pluginBridgeUniqueFn] = mejs.MediaPluginBridge = {
 
 	pluginMediaElements:{},
 	htmlMediaElements:{},
@@ -1095,9 +1097,6 @@ mejs.HtmlMediaElementShim = {
 		}
 
 		// flash vars
-		/**
-		 * @TODO pass in mejs callback so we dont use a standard global
-		 */
 		initVars = [
 			'id=' + pluginid,
 			'isvideo=' + ((playback.isVideo) ? "true" : "false"),
@@ -1108,6 +1107,7 @@ mejs.HtmlMediaElementShim = {
 			'timerrate=' + options.timerRate,
 			'flashstreamer=' + options.flashStreamer,
 			'height=' + height,
+			'jsinterface=' + pluginBridgeUniqueFn,
 			'pseudostreamstart=' + options.pseudoStreamingStartQueryParam];
 
 		if (playback.url !== null) {

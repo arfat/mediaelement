@@ -1,5 +1,5 @@
 // Handles calls from Flash and reports them as native <video/audio> events and properties
-mejs.MediaPluginBridge = {
+window[pluginBridgeUniqueFn] = mejs.MediaPluginBridge = {
 
 	pluginMediaElements:{},
 	htmlMediaElements:{},
@@ -454,9 +454,6 @@ mejs.HtmlMediaElementShim = {
 		}
 
 		// flash vars
-		/**
-		 * @TODO pass in mejs callback so we dont use a standard global
-		 */
 		initVars = [
 			'id=' + pluginid,
 			'isvideo=' + ((playback.isVideo) ? "true" : "false"),
@@ -467,6 +464,7 @@ mejs.HtmlMediaElementShim = {
 			'timerrate=' + options.timerRate,
 			'flashstreamer=' + options.flashStreamer,
 			'height=' + height,
+			'jsinterface=' + pluginBridgeUniqueFn,
 			'pseudostreamstart=' + options.pseudoStreamingStartQueryParam];
 
 		if (playback.url !== null) {

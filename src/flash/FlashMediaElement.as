@@ -44,12 +44,15 @@ package
 		private var _enablePseudoStreaming:Boolean;
 		private var _pseudoStreamingStartQueryParam:String;
 
+		private var _hasStartedPlay:Boolean = false;
+		private var _jsInterface:String;
+
 		// native video size (from meta data)
 		private var _nativeVideoWidth:Number = 0;
 		private var _nativeVideoHeight:Number = 0;
 
 		// visual elements
-    private var _mediaElementDisplay:FlashMediaElementDisplay = new FlashMediaElementDisplay();
+		private var _mediaElementDisplay:FlashMediaElementDisplay = new FlashMediaElementDisplay();
 		private var _output:TextField;
 		private var _fullscreenButton:SimpleButton;
 
@@ -63,7 +66,7 @@ package
 		//private var fullscreen_btn:SimpleButton;
 
 		// CONTROLS
-		private var _alwaysShowControls:Boolean;
+		private var _showControls:Boolean;
 		private var _controlBar:MovieClip;
 		private var _controlBarBg:MovieClip;
 		private var _scrubBar:MovieClip;
@@ -144,7 +147,7 @@ package
 			_debug = (params['debug'] != undefined) ? (String(params['debug']) == "true") : false;
 			_isVideo = (params['isvideo'] != undefined) ? ((String(params['isvideo']) == "false") ? false : true  ) : true;
 			_timerRate = (params['timerrate'] != undefined) ? (parseInt(params['timerrate'], 10)) : 250;
-			_alwaysShowControls = (params['controls'] != undefined) ? (String(params['controls']) == "true") : false;
+			_showControls = (params['controls'] != undefined) ? (String(params['controls']) == "true") : false;
 			_enableSmoothing = (params['smoothing'] != undefined) ? (String(params['smoothing']) == "true") : false;
 			_startVolume = (params['startvolume'] != undefined) ? (parseFloat(params['startvolume'])) : 0.8;
 			_preload = (params['preload'] != undefined) ? params['preload'] : "none";
@@ -156,6 +159,7 @@ package
 			_enablePseudoStreaming = (params['pseudostreaming'] != undefined) ? (String(params['pseudostreaming']) == "true") : false;
 			_pseudoStreamingStartQueryParam = (params['pseudostreamstart'] != undefined) ? (String(params['pseudostreamstart'])) : "start";
 			_streamer = (params['flashstreamer'] != undefined) ? (String(params['flashstreamer'])) : "";
+			_jsInterface = (params['jsinterface'] != undefined) ? (String(params['jsinterface'])) : "mejs.MediaPluginBridge";
 
 			_output.visible = _debug;
 
@@ -172,7 +176,7 @@ package
 
 			//_autoplay = true;
 			//_mediaUrl  = "http://mediafiles.dts.edu/chapel/mp4/20100609.mp4";
-			//_alwaysShowControls = true;
+			//_showControls = true;
 			//_mediaUrl  = "../media/Parades-PastLives.mp3";
 			//_mediaUrl  = "../media/echo-hereweare.mp4";
 
@@ -182,7 +186,7 @@ package
 			//_mediaUrl = "http://www.youtube.com/watch?feature=player_embedded&v=yyWWXSwtPP0"; // hosea
 			//_mediaUrl = "http://www.youtube.com/watch?feature=player_embedded&v=m5VDDJlsD6I"; // railer with notes
 
-			//_alwaysShowControls = true;
+			//_showControls = true;
 
 			//_debug=true;
 
@@ -250,7 +254,7 @@ package
 			_fullscreenIcon = _controlBar.getChildByName("fullscreenIcon") as SimpleButton;
 
 			// New fullscreenIcon for new fullscreen floating controls
-			//if(_alwaysShowControls && _controlStyle.toUpperCase()=="FLOATING") {
+			//if(_showControls && _controlStyle.toUpperCase()=="FLOATING") {
 				_fullscreenIcon.addEventListener(MouseEvent.CLICK, fullScreenIconClick, false);
 			//}
 
@@ -285,7 +289,7 @@ package
 			_scrubOverlay.addEventListener(MouseEvent.MOUSE_OVER, scrubOver);
 			_scrubOverlay.addEventListener(MouseEvent.MOUSE_OUT, scrubOut);
 
-			if (_autoHide) { // && _alwaysShowControls) {
+			if (_autoHide) { // && _showControls) {
 				// Add mouse activity for show/hide of controls
 				stage.addEventListener(Event.MOUSE_LEAVE, mouseActivityLeave);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseActivityMove);
@@ -306,7 +310,7 @@ package
 				_volumeUnMuted.visible=true;
 			}
 
-			_controlBar.visible = _alwaysShowControls;
+			_controlBar.visible = _showControls;
 
 			setControlDepth();
 
@@ -334,7 +338,7 @@ package
 			_scrubLoaded.scaleX=0;
 
 
-			if (ExternalInterface.available) { //  && !_alwaysShowControls
+			if (ExternalInterface.available) { //  && !_showControls
 
 				_output.appendText("Adding callbacks...\n");
 				try {
@@ -358,7 +362,7 @@ package
 						ExternalInterface.addCallback("hideFullscreenButton", hideFullscreenButton);
 
 						// fire init method
-						ExternalInterface.call("mejs.MediaPluginBridge.initPlugin", ExternalInterface.objectID);
+						ExternalInterface.call(_jsInterface + ".initPlugin", ExternalInterface.objectID);
 					}
 
 					_output.appendText("Success...\n");
@@ -465,10 +469,10 @@ package
 		private function mouseActivityMove(event:MouseEvent):void {
 
 			// if mouse is in the video area
-			if (_autoHide && (mouseX>=0 && mouseX<=stage.stageWidth) && (mouseY>=0 && mouseY<=stage.stageHeight)) {
+			if ((_hasStartedPlay && _showControls) && _autoHide && (mouseX>=0 && mouseX<=stage.stageWidth) && (mouseY>=0 && mouseY<=stage.stageHeight)) {
 
 				// This could be move to a nice fade at some point...
-				_controlBar.visible = (_alwaysShowControls || _isFullScreen);
+				_controlBar.visible = (_showControls || _isFullScreen);
 				_isMouseActive = true;
 				_idleTime = 0;
 				_timer.reset();
@@ -477,7 +481,7 @@ package
 		}
 
 		private function mouseActivityLeave(event:Event):void {
-			if (_autoHide) {
+			if ((_hasStartedPlay && _showControls) && _autoHide) {
 				_isOverStage = false;
 				// This could be move to a nice fade at some point...
 				_controlBar.visible = false;
@@ -490,7 +494,7 @@ package
 
 		private function idleTimer(event:TimerEvent):void    {
 
-			if (_autoHide) {
+			if ((_hasStartedPlay && _showControls) && _autoHide) {
 				// This could be move to a nice fade at some point...
 				_controlBar.visible = false;
 				_isMouseActive = false;
@@ -504,7 +508,7 @@ package
 
 		private function scrubMove(event:MouseEvent):void {
 
-			//if (_alwaysShowControls) {
+			//if (_showControls) {
 				if (_hoverTime.visible) {
 					var seekBarPosition:Number =  ((event.localX / _scrubTrack.width) *_mediaElement.duration())*_scrubTrack.scaleX;
 					var hoverPos:Number = (seekBarPosition / _mediaElement.duration()) *_scrubTrack.scaleX;
@@ -787,7 +791,7 @@ package
 			sendEvent(HtmlMediaEvent.FULLSCREENCHANGE, "isFullScreen:" + e.fullScreen );
 
 			if (!e.fullScreen) {
-				_controlBar.visible = _alwaysShowControls;
+				_controlBar.visible = _showControls;
 			}
 		}
 		// END: Fullscreen
@@ -961,6 +965,10 @@ package
 		// SEND events to JavaScript
 		public function sendEvent(eventName:String, eventValues:String):void {
 
+			if(eventName == HtmlMediaEvent.PLAY && _isVideo) {
+				_hasStartedPlay = true;
+			}
+
 			// special video event
 			if (eventName == HtmlMediaEvent.LOADEDMETADATA && _isVideo) {
 
@@ -1013,8 +1021,8 @@ package
 				*/
 
 				// use set timeout for performance reasons
-				//if (!_alwaysShowControls) {
-					ExternalInterface.call("setTimeout", "mejs.MediaPluginBridge.fireEvent('" + ExternalInterface.objectID + "','" + eventName + "'," + eventValues + ")",0);
+				//if (!_showControls) {
+					ExternalInterface.call("setTimeout", _jsInterface + ".fireEvent('" + ExternalInterface.objectID + "','" + eventName + "'," + eventValues + ")",0);
 				//}
 			}
 		}
