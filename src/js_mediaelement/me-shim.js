@@ -486,6 +486,9 @@ mejs.HtmlMediaElementShim = {
 		if (controls) {
 			initVars.push('controls=true'); // shows controls in the plugin if desired
 		}
+		if (poster) {
+			initVars.push('poster=' + (playback.method == 'flash' ? mejs.Utility.encodeUrl(poster) : poster));
+		}
 		if (options.pluginVars) {
 			initVars = initVars.concat(options.pluginVars);
 		}

@@ -45,6 +45,8 @@ package
 		private var _pseudoStreamingStartQueryParam:String;
 
 		private var _hasStartedPlay:Boolean = false;
+		private var _posterSrc:String;
+		private var _posterObj:Loader;
 		private var _jsInterface:String;
 
 		// native video size (from meta data)
@@ -106,7 +108,27 @@ package
  			Security.allowDomain("*");
 			Security.allowInsecureDomain('*');
 
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
 
+			if((stage.stageWidth != 0)&&(stage.stageHeight != 0)){
+				init();
+			} else {
+				//work around IE flash embedding issues
+				trace('stage is 0x0; listening for resize event');
+				stage.addEventListener(Event.RESIZE, function onResize(e:Event):void {
+					if((stage.stageWidth != 0) && (stage.stageHeight != 0)){
+						trace('stage is OK!');
+						stage.removeEventListener(Event.RESIZE, onResize);
+						init();
+					} else {
+						trace('stage is ' + stage.stageWidth + 'x' + stage.stageHeight);
+					}
+				});
+			}
+		}
+
+		private function init():void {
 			// add debug output
 			_output = new TextField();
 			_output.textColor = 0xeeeeee;
@@ -160,6 +182,7 @@ package
 			_pseudoStreamingStartQueryParam = (params['pseudostreamstart'] != undefined) ? (String(params['pseudostreamstart'])) : "start";
 			_streamer = (params['flashstreamer'] != undefined) ? (String(params['flashstreamer'])) : "";
 			_jsInterface = (params['jsinterface'] != undefined) ? (String(params['jsinterface'])) : "mejs.MediaPluginBridge";
+			_posterSrc = (params['poster'] != undefined) ? (String(params['poster'])) : "";
 
 			_output.visible = _debug;
 
@@ -167,31 +190,10 @@ package
 				_timerRate = 250;
 
 			// setup stage and player sizes/scales
-			stage.align = StageAlign.TOP_LEFT;
-			stage.scaleMode = StageScaleMode.NO_SCALE;
 			_stageWidth = stage.stageWidth;
 			_stageHeight = stage.stageHeight;
 			this.addChild(_mediaElementDisplay);
 			stage.addChild(this);
-
-			//_autoplay = true;
-			//_mediaUrl  = "http://mediafiles.dts.edu/chapel/mp4/20100609.mp4";
-			//_showControls = true;
-			//_mediaUrl  = "../media/Parades-PastLives.mp3";
-			//_mediaUrl  = "../media/echo-hereweare.mp4";
-
-			//_mediaUrl = "http://video.ted.com/talks/podcast/AlGore_2006_480.mp4";
-			//_mediaUrl = "rtmp://stream2.france24.yacast.net/france24_live/en/f24_liveen";
-
-			//_mediaUrl = "http://www.youtube.com/watch?feature=player_embedded&v=yyWWXSwtPP0"; // hosea
-			//_mediaUrl = "http://www.youtube.com/watch?feature=player_embedded&v=m5VDDJlsD6I"; // railer with notes
-
-			//_showControls = true;
-
-			//_debug=true;
-
-
-
 
 			// position and hide
 			_fullscreenButton = _mediaElementDisplay.getChildByName("fullscreen_btn") as SimpleButton;
@@ -200,7 +202,6 @@ package
 			_fullscreenButton.addEventListener(MouseEvent.CLICK, fullscreenClick, false);
 			_fullscreenButton.x = stage.stageWidth - _fullscreenButton.width;
 			_fullscreenButton.y = stage.stageHeight - _fullscreenButton.height;
-
 
 			// create media element
 			if (_isVideo) {
@@ -230,11 +231,32 @@ package
 					addChild(_video);
 				}
 			} else {
-
-				//var player2:AudioDecoder = new com.automatastudios.audio.audiodecoder.AudioDecoder();
 				_mediaElement = new AudioElement(this, _autoplay, _preload, _timerRate, _startVolume);
 			}
 
+			if(_posterSrc) {
+				_output.appendText("poster: " + _posterSrc + "\n");
+				_posterObj = new Loader();
+				_posterObj.load(new URLRequest(_posterSrc));
+				_posterObj.contentLoaderInfo.addEventListener(Event.COMPLETE, function fn():void {
+					var stageRatio:Number = stage.stageWidth / stage.stageHeight;
+					var loaderRatio:Number = _posterObj.width / _posterObj.height;
+
+					if(stageRatio < loaderRatio){
+						_posterObj.width = stage.stageWidth;
+						_posterObj.scaleY = _posterObj.scaleX;
+					}else{
+						_posterObj.height = stage.stageHeight;
+						_posterObj.scaleX = _posterObj.scaleY;
+					}
+
+					_posterObj.x = (stage.stageWidth - _posterObj.width)/2;
+					_posterObj.y = (stage.stageHeight - _posterObj.height)/2;
+
+					this.removeEventListener(Event.COMPLETE, fn);
+				});
+				addChild(_posterObj);
+			}
 
 			// controls!
 			_controlBar = _mediaElementDisplay.getChildByName("controls_mc") as MovieClip;
@@ -252,11 +274,7 @@ package
 			applyColor(_scrubLoaded, _scrubLoadedColor);
 
 			_fullscreenIcon = _controlBar.getChildByName("fullscreenIcon") as SimpleButton;
-
-			// New fullscreenIcon for new fullscreen floating controls
-			//if(_showControls && _controlStyle.toUpperCase()=="FLOATING") {
-				_fullscreenIcon.addEventListener(MouseEvent.CLICK, fullScreenIconClick, false);
-			//}
+			_fullscreenIcon.addEventListener(MouseEvent.CLICK, fullScreenIconClick, false);
 
 			_volumeMuted = _controlBar.getChildByName("muted_mc") as SimpleButton;
 			_volumeUnMuted = _controlBar.getChildByName("unmuted_mc") as SimpleButton;
@@ -281,15 +299,13 @@ package
 			_hoverTime.y=(_hoverTime.height/2)+1;
 			_hoverTime.x=0;
 
-
-
 			// Add new timeline scrubber events
 			_scrubOverlay.addEventListener(MouseEvent.MOUSE_MOVE, scrubMove);
 			_scrubOverlay.addEventListener(MouseEvent.CLICK, scrubClick);
 			_scrubOverlay.addEventListener(MouseEvent.MOUSE_OVER, scrubOver);
 			_scrubOverlay.addEventListener(MouseEvent.MOUSE_OUT, scrubOut);
 
-			if (_autoHide) { // && _showControls) {
+			if (_autoHide) {
 				// Add mouse activity for show/hide of controls
 				stage.addEventListener(Event.MOUSE_LEAVE, mouseActivityLeave);
 				stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseActivityMove);
@@ -297,7 +313,6 @@ package
 				_timer = new Timer(_inactiveTime)
 				_timer.addEventListener(TimerEvent.TIMER, idleTimer);
 				_timer.start();
-				// set
 			}
 
 			if(_startVolume<=0) {
@@ -338,7 +353,7 @@ package
 			_scrubLoaded.scaleX=0;
 
 
-			if (ExternalInterface.available) { //  && !_showControls
+			if (ExternalInterface.available) {
 
 				_output.appendText("Adding callbacks...\n");
 				try {
@@ -966,6 +981,9 @@ package
 		public function sendEvent(eventName:String, eventValues:String):void {
 
 			if(eventName == HtmlMediaEvent.PLAY && _isVideo) {
+				if(_posterObj.stage) {
+					_posterObj.parent.removeChild(_posterObj);
+				}
 				_hasStartedPlay = true;
 			}
 
