@@ -15,14 +15,14 @@ window[pluginBridgeUniqueFn] = mejs.MediaPluginBridge = {
 	},
 
 	// when Flash is ready, it calls out to this method
-	initPlugin: function (id) {
+	'initPlugin': function (id) {
 
 		var pluginMediaElement = this.pluginMediaElements[id],
 			htmlMediaElement = this.htmlMediaElements[id];
 
 		if (pluginMediaElement) {
 			// find the javascript bridge
-			if(pluginMediaElement.pluginType == 'flash') {
+			if(pluginMediaElement['pluginType'] == 'flash') {
 				pluginMediaElement.pluginElement = pluginMediaElement.pluginApi = document.getElementById(id);
 			}
 
@@ -34,7 +34,7 @@ window[pluginBridgeUniqueFn] = mejs.MediaPluginBridge = {
 
 	// receives events from Flash and sends them out as HTML5 media events
 	// http://www.whatwg.org/specs/web-apps/current-work/multipage/video.html
-	fireEvent: function (id, eventName, values) {
+	'fireEvent': function (id, eventName, values) {
 
 		var
 			e,
@@ -85,44 +85,44 @@ mejs.MediaElementDefaults = {
 	// native: forces HTML5 playback
 	// shim: disallows HTML5, will attempt Flash
 	// none: forces fallback view
-	mode: 'auto',
+	'mode': 'auto',
 	// remove or reorder to change plugin priority and availability
-	plugins: ['flash','youtube'],
+	'plugins': ['flash','youtube'],
 	// shows debug errors on screen
-	enablePluginDebug: false,
+	'enablePluginDebug': false,
 	// use plugin for browsers that have trouble with Basic Authentication on HTTPS sites
-	httpsBasicAuthSite: false,
+	'httpsBasicAuthSite': false,
 	// overrides the type specified, useful for dynamic instantiation
-	type: '',
+	'type': '',
 	// path to Flash plugins
-	pluginPath: mejs.Utility.getScriptPath(['mediaelement.js','mediaelement.min.js','mediaelement-and-player.js','mediaelement-and-player.min.js']),
+	'pluginPath': '',
 	// name of flash file
-	flashName: 'flashmediaelement.swf',
+	'flashName': 'flashmediaelement.swf',
 	// streamer for RTMP streaming
-	flashStreamer: '',
+	'flashStreamer': '',
 	// turns on the smoothing filter in Flash
-	enablePluginSmoothing: false,
+	'enablePluginSmoothing': false,
 	// enabled pseudo-streaming (seek) on .mp4 files
-	enablePseudoStreaming: false,
+	'enablePseudoStreaming': false,
 	// start query parameter sent to server for pseudo-streaming
-	pseudoStreamingStartQueryParam: 'start',
+	'pseudoStreamingStartQueryParam': 'start',
 	// default if the <video width> is not specified
-	defaultVideoWidth: 480,
+	'defaultVideoWidth': 480,
 	// default if the <video height> is not specified
-	defaultVideoHeight: 270,
+	'defaultVideoHeight': 270,
 	// overrides <video width>
-	pluginWidth: -1,
+	'pluginWidth': -1,
 	// overrides <video height>
-	pluginHeight: -1,
+	'pluginHeight': -1,
 	// additional plugin variables in 'key=value' form
-	pluginVars: [],
+	'pluginVars': [],
 	// rate in milliseconds for Flash  to fire the timeupdate event
 	// larger number is less accurate, but less strain on plugin->JavaScript bridge
-	timerRate: 250,
+	'timerRate': 250,
 	// initial volume for player
-	startVolume: 0.8,
-	success: function () { },
-	error: function () { }
+	'startVolume': 0.8,
+	'success': function () { },
+	'error': function () { }
 };
 
 /*
@@ -132,6 +132,13 @@ mimics HTML5 MediaElement
 */
 mejs.MediaElement = function (el, o) {
 	return mejs.HtmlMediaElementShim.create(el,o);
+};
+mejs.MediaElement['features'] = {
+	'nativeFullscreen': mejs.MediaFeatures.hasTrueNativeFullScreen,
+	'fullScreenEventName': mejs.MediaFeatures.fullScreenEventName,
+	'isFullScreen': mejs.MediaFeatures.isFullScreen,
+	'requestFullScreen': mejs.MediaFeatures.requestFullScreen,
+	'cancelFullScreen': mejs.MediaFeatures.cancelFullScreen
 };
 
 mejs.HtmlMediaElementShim = {
@@ -182,7 +189,7 @@ mejs.HtmlMediaElementShim = {
 			return this.createPlugin( playback,  options, poster, autoplay, preload, controls);
 		} else {
 			// boo, no HTML5, no Flash
-			options.error();
+			options['error']();
 
 			return this;
 		}
@@ -207,15 +214,15 @@ mejs.HtmlMediaElementShim = {
 		// STEP 1: Get URL and type from <video src> or <source src>
 
 		// supplied type overrides <video type> and <source type>
-		if (typeof options.type != 'undefined' && options.type !== '') {
+		if (typeof options['type'] != 'undefined' && options['type'] !== '') {
 
 			// accept either string or array of types
-			if (typeof options.type == 'string') {
-				mediaFiles.push({type:options.type, url:src});
+			if (typeof options['type'] == 'string') {
+				mediaFiles.push({type:options['type'], url:src});
 			} else {
 
-				for (i=0; i<options.type.length; i++) {
-					mediaFiles.push({type:options.type[i], url:src});
+				for (i=0; i<options['type'].length; i++) {
+					mediaFiles.push({type:options['type'][i], url:src});
 				}
 			}
 
@@ -259,7 +266,7 @@ mejs.HtmlMediaElementShim = {
 
 
 		// test for native playback first
-		if (supportsMediaTag && (options.mode === 'auto' || options.mode === 'auto_plugin' || options.mode === 'native')  && !(mejs.MediaFeatures.isBustedNativeHTTPS && options.httpsBasicAuthSite === true)) {
+		if (supportsMediaTag && (options['mode'] === 'auto' || options['mode'] === 'auto_plugin' || options['mode'] === 'native')  && !(mejs.MediaFeatures.isBustedNativeHTTPS && options['httpsBasicAuthSite'] === true)) {
 
 			if (!isMediaTag) {
 
@@ -287,21 +294,21 @@ mejs.HtmlMediaElementShim = {
 				}
 
 				// if `auto_plugin` mode, then cache the native result but try plugins.
-				if (options.mode !== 'auto_plugin') {
+				if (options['mode'] !== 'auto_plugin') {
 					return result;
 				}
 			}
 		}
 
 		// if native playback didn't work, then test plugins
-		if (options.mode === 'auto' || options.mode === 'auto_plugin' || options.mode === 'shim') {
+		if (options['mode'] === 'auto' || options['mode'] === 'auto_plugin' || options['mode'] === 'shim') {
 			for (i=0; i<mediaFiles.length; i++) {
 				type = mediaFiles[i].type;
 
 				// test all plugins in order of preference [ flash]
-				for (j=0; j<options.plugins.length; j++) {
+				for (j=0; j<options['plugins'].length; j++) {
 
-					pluginName = options.plugins[j];
+					pluginName = options['plugins'][j];
 
 					// test version of plugin (for future features)
 					pluginVersions = mejs.plugins[pluginName];
@@ -331,7 +338,7 @@ mejs.HtmlMediaElementShim = {
 
 		// at this point, being in 'auto_plugin' mode implies that we tried plugins but failed.
 		// if we have native support then return that.
-		if (options.mode === 'auto_plugin' && result.method === 'native') {
+		if (options['mode'] === 'auto_plugin' && result.method === 'native') {
 			return result;
 		}
 
@@ -425,22 +432,22 @@ mejs.HtmlMediaElementShim = {
 		}
 
 		if (playback.isVideo) {
-			width = (options.pluginWidth > 0) ? options.pluginWidth : (options.videoWidth > 0) ? options.videoWidth : (htmlMediaElement.getAttribute('width') !== null) ? htmlMediaElement.getAttribute('width') : options.defaultVideoWidth;
-			height = (options.pluginHeight > 0) ? options.pluginHeight : (options.videoHeight > 0) ? options.videoHeight : (htmlMediaElement.getAttribute('height') !== null) ? htmlMediaElement.getAttribute('height') : options.defaultVideoHeight;
+			width = (options['pluginWidth'] > 0) ? options['pluginWidth'] : (options['videoWidth'] > 0) ? options['videoWidth'] : (htmlMediaElement.getAttribute('width') !== null) ? htmlMediaElement.getAttribute('width') : options['defaultVideoWidth'];
+			height = (options['pluginHeight'] > 0) ? options['pluginHeight'] : (options['videoHeight'] > 0) ? options['videoHeight'] : (htmlMediaElement.getAttribute('height') !== null) ? htmlMediaElement.getAttribute('height') : options['defaultVideoHeight'];
 
 			// in case of '%' make sure it's encoded
 			width = mejs.Utility.encodeUrl(width);
 			height = mejs.Utility.encodeUrl(height);
 
 		} else {
-			if (options.enablePluginDebug) {
+			if (options['enablePluginDebug']) {
 				width = 320;
 				height = 240;
 			}
 		}
 
 		// register plugin
-		pluginMediaElement.success = options.success;
+		pluginMediaElement.success = options['success'];
 		mejs.MediaPluginBridge.registerPluginElement(pluginid, pluginMediaElement, htmlMediaElement);
 
 		// add container (must be added to DOM before inserting HTML for IE)
@@ -460,12 +467,12 @@ mejs.HtmlMediaElementShim = {
 			'autoplay=' + ((autoplay) ? "true" : "false"),
 			'preload=' + preload,
 			'width=' + width,
-			'startvolume=' + options.startVolume,
-			'timerrate=' + options.timerRate,
-			'flashstreamer=' + options.flashStreamer,
+			'startvolume=' + options['startVolume'],
+			'timerrate=' + options['timerRate'],
+			'flashstreamer=' + options['flashStreamer'],
 			'height=' + height,
 			'jsinterface=' + pluginBridgeUniqueFn,
-			'pseudostreamstart=' + options.pseudoStreamingStartQueryParam];
+			'pseudostreamstart=' + options['pseudoStreamingStartQueryParam']];
 
 		if (playback.url !== null) {
 			if (playback.method == 'flash') {
@@ -474,13 +481,13 @@ mejs.HtmlMediaElementShim = {
 				initVars.push('file=' + playback.url);
 			}
 		}
-		if (options.enablePluginDebug) {
+		if (options['enablePluginDebug']) {
 			initVars.push('debug=true');
 		}
-		if (options.enablePluginSmoothing) {
+		if (options['enablePluginSmoothing']) {
 			initVars.push('smoothing=true');
 		}
-		if (options.enablePseudoStreaming) {
+		if (options['enablePseudoStreaming']) {
 			initVars.push('pseudostreaming=true');
 		}
 		if (controls) {
@@ -489,13 +496,13 @@ mejs.HtmlMediaElementShim = {
 		if (poster) {
 			initVars.push('poster=' + (playback.method == 'flash' ? mejs.Utility.encodeUrl(poster) : poster));
 		}
-		if (options.pluginVars) {
-			initVars = initVars.concat(options.pluginVars);
+		if (options['pluginVars']) {
+			initVars = initVars.concat(options['pluginVars']);
 		}
 
 		switch (playback.method) {
 			case 'flash':
-				var flash_html = glamFlash(options.pluginPath + options.flashName, width, height, 9, {
+				var flash_html = glamFlash(options['pluginPath'] + options['flashName'], width, height, 9, {
 						'id': pluginid,
 						'name': pluginid,
 						'flashvars': initVars.join('&amp;'),
@@ -555,7 +562,7 @@ mejs.HtmlMediaElementShim = {
 		}
 
 		// fire success code
-		options.success(htmlMediaElement);
+		options['success'](htmlMediaElement);
 
 		return htmlMediaElement;
 	}
@@ -582,7 +589,6 @@ mejs.YouTubeApi = {
 	},
 	iframeQueue: [],
 	enqueueIframe: function(yt) {
-
 		if (this.isLoaded) {
 			this.createIframe(yt);
 		} else {
@@ -591,78 +597,76 @@ mejs.YouTubeApi = {
 		}
 	},
 	createIframe: function(settings) {
+		var pluginMediaElement = settings.pluginMediaElement,
+			player = new window['YT']['Player'](settings.containerId, {
+				'height': settings.height,
+				'width': settings.width,
+				'videoId': settings.videoId,
+				'playerVars': {'controls': settings.controls ? 1 : 0},
+				'events': {
+					'onReady': function() {
 
-		var
-		pluginMediaElement = settings.pluginMediaElement,
-		player = new window['YT']['Player'](settings.containerId, {
-			'height': settings.height,
-			'width': settings.width,
-			'videoId': settings.videoId,
-			'playerVars': {'controls': settings.controls ? 1 : 0},
-			'events': {
-				'onReady': function() {
+						// hook up iframe object to MEjs
+						settings.pluginMediaElement.pluginApi = player;
 
-					// hook up iframe object to MEjs
-					settings.pluginMediaElement.pluginApi = player;
+						// init mejs
+						mejs.MediaPluginBridge['initPlugin'](settings.pluginId);
 
-					// init mejs
-					mejs.MediaPluginBridge.initPlugin(settings.pluginId);
+						// create timer
+						setInterval(function() {
+							mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'timeupdate');
+						}, 250);
+					},
+					'onStateChange': function(e) {
 
-					// create timer
-					setInterval(function() {
-						mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'timeupdate');
-					}, 250);
-				},
-				'onStateChange': function(e) {
+						mejs.YouTubeApi.handleStateChange(e.data, player, pluginMediaElement);
 
-					mejs.YouTubeApi.handleStateChange(e.data, player, pluginMediaElement);
-
+					}
 				}
-			}
-		});
+			});
 	},
 
 	createEvent: function (player, pluginMediaElement, eventName) {
 		var obj = {
-			type: eventName,
-			target: pluginMediaElement
+			'type': eventName,
+			'target': pluginMediaElement
 		};
 
-		if (player && player.getDuration) {
+		if (player && player['getDuration']) {
 
 			// time
-			pluginMediaElement.currentTime = obj.currentTime = player.getCurrentTime();
-			pluginMediaElement.duration = obj.duration = player.getDuration();
+			pluginMediaElement['currentTime'] = obj['currentTime'] = player['getCurrentTime']();
+			pluginMediaElement['duration'] = obj['duration'] = player['getDuration']();
 
 			// state
-			obj.paused = pluginMediaElement.paused;
-			obj.ended = pluginMediaElement.ended;
+			obj['paused'] = pluginMediaElement['paused'];
+			obj['ended'] = pluginMediaElement['ended'];
 
 			// sound
-			obj.muted = player.isMuted();
-			obj.volume = player.getVolume() / 100;
+			obj['muted'] = player['isMuted']();
+			obj['volume'] = player['getVolume']() / 100;
 
 			// progress
-			obj.bytesTotal = player.getVideoBytesTotal();
-			obj.bufferedBytes = player.getVideoBytesLoaded();
+			obj['bytesTotal'] = player['getVideoBytesTotal']();
+			obj['bufferedBytes'] = player['getVideoBytesLoaded']();
 
 			// fake the W3C buffered TimeRange
-			var bufferedTime = obj.bufferedBytes / obj.bytesTotal * obj.duration;
+			var bufferedTime = obj['bufferedBytes'] / obj['bytesTotal'] * obj['duration'];
 
-			obj.target.buffered = obj.buffered = {
-				start: function(index) {
+			obj['target']['buffered'] = obj['buffered'] = {
+				'start': function(index) {
 					return 0;
 				},
-				end: function (index) {
+				'end': function (index) {
 					return bufferedTime;
 				},
-				length: 1
+				'length': 1
 			};
 
 		}
 
 		// send event up the chain
-		pluginMediaElement.dispatchEvent(obj.type, obj);
+		pluginMediaElement.dispatchEvent(obj['type'], obj);
 	},
 
 	iFrameReady: function() {
@@ -714,7 +718,7 @@ mejs.YouTubeApi = {
 
 		// hook up and return to MediaELementPlayer.success
 		pluginMediaElement.pluginApi = pluginMediaElement.pluginElement = player;
-		mejs.MediaPluginBridge.initPlugin(id);
+		mejs.MediaPluginBridge['initPlugin'](id);
 
 		// load the youtube video
 		if(!settings.controls) {
@@ -737,25 +741,25 @@ mejs.YouTubeApi = {
 	handleStateChange: function(youTubeState, player, pluginMediaElement) {
 		switch (youTubeState) {
 			case -1: // not started
-				pluginMediaElement.paused = true;
-				pluginMediaElement.ended = true;
+				pluginMediaElement['paused'] = true;
+				pluginMediaElement['ended'] = true;
 				mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'loadedmetadata');
 				//createYouTubeEvent(player, pluginMediaElement, 'loadeddata');
 				break;
 			case 0:
-				pluginMediaElement.paused = false;
-				pluginMediaElement.ended = true;
+				pluginMediaElement['paused'] = false;
+				pluginMediaElement['ended'] = true;
 				mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'ended');
 				break;
 			case 1:
-				pluginMediaElement.paused = false;
-				pluginMediaElement.ended = false;
+				pluginMediaElement['paused'] = false;
+				pluginMediaElement['ended'] = false;
 				mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'play');
 				mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'playing');
 				break;
 			case 2:
-				pluginMediaElement.paused = true;
-				pluginMediaElement.ended = false;
+				pluginMediaElement['paused'] = true;
+				pluginMediaElement['ended'] = false;
 				mejs.YouTubeApi.createEvent(player, pluginMediaElement, 'pause');
 				break;
 			case 3: // buffering
@@ -770,14 +774,15 @@ mejs.YouTubeApi = {
 	}
 };
 // IFRAME
-var oldYouTubePlayerAPIReady = window.onYouTubePlayerAPIReady;
-window.onYouTubePlayerAPIReady = function() {
+var oldYouTubePlayerAPIReady = window['onYouTubePlayerAPIReady'];
+window['onYouTubePlayerAPIReady'] = function() {
 	mejs.YouTubeApi.iFrameReady();
 	if(typeof oldYouTubePlayerAPIReady == 'function') oldYouTubePlayerAPIReady();
 };
-var oldYouTubePlayerReady = window.onYouTubePlayerReady;
+
 // FLASH
-window.onYouTubePlayerReady = function(id) {
+var oldYouTubePlayerReady = window['onYouTubePlayerReady'];
+window['onYouTubePlayerReady'] = function(id) {
 	mejs.YouTubeApi.flashReady(id);
 	if(typeof oldYouTubePlayerReady == 'function') oldYouTubePlayerReady(id);
 };

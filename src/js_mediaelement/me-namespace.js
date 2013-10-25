@@ -6,10 +6,10 @@ mejs.meIndex = 0;
 
 // media types accepted by plugins
 mejs.plugins = {
-	flash: [
+	'flash': [
 		{version: 9, types: ['video/mp4','video/m4v','video/mov','video/flv','video/rtmp','video/x-flv','audio/flv','audio/x-flv','audio/mp3','audio/m4a','audio/mpeg', 'video/youtube', 'video/x-youtube']}
 	],
-	youtube: [
+	'youtube': [
 		{version: null, types: ['video/youtube', 'video/x-youtube', 'audio/youtube', 'audio/x-youtube']}
 	]
 };

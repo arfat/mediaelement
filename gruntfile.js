@@ -31,7 +31,7 @@ module.exports = function(grunt) {
 							' * BUILT VIA MEDIAELEMENT REPOSITORY - DO NOT EDIT HERE *\r\n'+
 							' *======================================================*/\r\n'+
 							'glam.create.define("mediaelement", ["flash"], function(glamFlash) {',
-					footer: 'return mejs;});'
+					footer: 'return mejs.MediaElement;});'
 				},
 				src: [
 					'<%= dirs.me_src %>me-namespace.js',
