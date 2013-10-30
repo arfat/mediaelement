@@ -602,7 +602,7 @@ mejs.YouTubeApi = {
 				'height': settings.height,
 				'width': settings.width,
 				'videoId': settings.videoId,
-				'playerVars': {'controls': settings.controls ? 1 : 0},
+				'playerVars': {'controls': settings.controls ? 1 : 0, 'wmode': 'opaque'},
 				'events': {
 					'onReady': function() {
 
