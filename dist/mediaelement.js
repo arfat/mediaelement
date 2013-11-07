@@ -393,7 +393,7 @@ mejs.PluginMediaElement.prototype = {
 				this.pluginApi['pauseMedia']();
 			}
 
-			this['paused'] = false;
+			this['paused'] = true;
 		}
 	},
 	stop: function() {
