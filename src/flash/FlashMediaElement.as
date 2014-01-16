@@ -60,6 +60,7 @@ package
 
 		// media
 		private var _mediaElement:IMediaElement;
+		private var _isEnded:Boolean = false;
 
 		// connection to fullscreen
 		private var _connection:LocalConnection;
@@ -197,8 +198,8 @@ package
 
 			// position and hide
 			_fullscreenButton = _mediaElementDisplay.getChildByName("fullscreen_btn") as SimpleButton;
-			//_fullscreenButton.visible = false;
-			_fullscreenButton.alpha = 0;
+			_fullscreenButton.visible = false;
+			//_fullscreenButton.alpha = 0;
 			_fullscreenButton.addEventListener(MouseEvent.CLICK, fullscreenClick, false);
 			_fullscreenButton.x = stage.stageWidth - _fullscreenButton.width;
 			_fullscreenButton.y = stage.stageHeight - _fullscreenButton.height;
@@ -253,7 +254,7 @@ package
 					_posterObj.x = (stage.stageWidth - _posterObj.width)/2;
 					_posterObj.y = (stage.stageHeight - _posterObj.height)/2;
 
-					this.removeEventListener(Event.COMPLETE, fn);
+					if(this.removeEventListener) this.removeEventListener(Event.COMPLETE, fn);
 				});
 				addChild(_posterObj);
 			}
@@ -284,6 +285,9 @@ package
 
 			_playButton = _controlBar.getChildByName("play_btn") as SimpleButton;
 			_playButton.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
+				if(_isEnded) {
+					_mediaElement.setCurrentTime(0);
+				}
 				_mediaElement.play();
 			});
 			_pauseButton = _controlBar.getChildByName("pause_btn") as SimpleButton;
@@ -575,7 +579,7 @@ package
 		}
 
 		public function toggleVolume(event:MouseEvent):void {
-			trace(event.currentTarget.name);
+			trace('Toggle Volume: '+event.currentTarget.name);
 			switch(event.currentTarget.name) {
 				case "muted_mc":
 					setMuted(false);
@@ -600,8 +604,8 @@ package
 
 
 			if ( _controlStyle.toUpperCase() == "FLOATING" && _isFullScreen) {
-
-				trace("CONTROLS: floating");
+				//trace("CONTROLS: floating");
+				
 				_hoverTime.y=(_hoverTime.height/2)+1;
 				_hoverTime.x=0;
 				_controlBarBg.width = 300;
@@ -640,7 +644,7 @@ package
 
 
 			} else {
-				trace("CONTROLS: normal, original");
+				//trace("CONTROLS: normal, original");
 
 				/*
 				// Original style bottom display
@@ -728,7 +732,7 @@ package
 
 			repositionVideo();
 			positionControls();
-			updateControls(HtmlMediaEvent.FULLSCREENCHANGE);
+			updateControls(HtmlMediaEvent.FULLSCREENCHANGE, '');
 
 			_controlBar.visible = true;
 
@@ -754,7 +758,6 @@ package
 
 				if (gofullscreen) {
 					enterFullscreen();
-
 				} else {
 					exitFullscreen();
 				}
@@ -762,8 +765,8 @@ package
 			} catch (error:Error) {
 
 				// show the button when the security error doesn't let it work
-				//_fullscreenButton.visible = true;
-				_fullscreenButton.alpha = 1;
+				_fullscreenButton.visible = true;
+				//_fullscreenButton.alpha = 1;
 
 				_isFullScreen = false;
 
@@ -783,8 +786,8 @@ package
 
 		// special floating fullscreen icon
 		public function fullscreenClick(e:MouseEvent):void {
-			//_fullscreenButton.visible = false;
-			_fullscreenButton.alpha = 0
+			_fullscreenButton.visible = false;
+			//_fullscreenButton.alpha = 0
 
 			try {
 				_controlBar.visible = true;
@@ -799,8 +802,8 @@ package
 		public function stageFullScreenChanged(e:FullScreenEvent):void {
 			_output.appendText("fullscreen event: " + e.fullScreen.toString() + "\n");
 
-			//_fullscreenButton.visible = false;
-			_fullscreenButton.alpha = 0;
+			_fullscreenButton.visible = false;
+			//_fullscreenButton.alpha = 0;
 			_isFullScreen = e.fullScreen;
 
 			sendEvent(HtmlMediaEvent.FULLSCREENCHANGE, "isFullScreen:" + e.fullScreen );
@@ -813,6 +816,9 @@ package
 
 		// START: external interface
 		public function playMedia():void {
+			if(_isEnded) {
+				_mediaElement.setCurrentTime(time);
+			}
 			_output.appendText("play\n");
 			_mediaElement.play();
 		}
@@ -895,18 +901,17 @@ package
 
 			// show it!
 			if (visibleAndAbove) {
-				_fullscreenButton.alpha = 1;
+				//_fullscreenButton.alpha = 1;
+				_fullscreenButton.visible = true;
 			}
 		}
 
 		public function hideFullscreenButton():void {
-
-			//_fullscreenButton.visible = false;
-			_fullscreenButton.alpha = 0;
+			_fullscreenButton.visible = false;
+			//_fullscreenButton.alpha = 0;
 		}
 
 		// END: external interface
-
 
 		private function repositionVideo():void {
 
@@ -979,9 +984,8 @@ package
 
 		// SEND events to JavaScript
 		public function sendEvent(eventName:String, eventValues:String):void {
-
 			if(eventName == HtmlMediaEvent.PLAY && _isVideo) {
-				if(_posterObj.stage) {
+				if(_posterObj && _posterObj.stage) {
 					_posterObj.parent.removeChild(_posterObj);
 				}
 				_hasStartedPlay = true;
@@ -1011,7 +1015,7 @@ package
 
 			}
 
-			updateControls(eventName);
+			updateControls(eventName, eventValues);
 
 			//trace((_mediaElement.duration()*1).toString() + " / " + (_mediaElement.currentTime()*1).toString());
 			//trace("CurrentProgress:"+_mediaElement.currentProgress());
@@ -1046,21 +1050,27 @@ package
 		}
 
 
-		private function updateControls(eventName:String):void {
-
-			//trace("updating controls");
+		private function updateControls(eventName:String, eventValues:String):void {
+			//trace("updating controls: " + eventName + ' - ' + eventValues);
 
 			try {
 				// update controls
 				switch (eventName) {
+					case "ended":
+						_isEnded = true;
 					case "pause":
 					case "paused":
-					case "ended":
 						_playButton.visible = true;
 						_pauseButton.visible = false;
 						break;
+					case "progress":
+						if(eventValues.indexOf('paused:true') >= 0) {
+							//Ignore progress event when paused
+							break;
+						}
 					case "play":
 					case "playing":
+						_isEnded = false;
 						_playButton.visible = false;
 						_pauseButton.visible = true;
 						break;

@@ -6,14 +6,14 @@ module.exports = function(grunt) {
 			me_src: '<%= dirs.src %>js_mediaelement/',
 			swf_src: '<%= dirs.src %>flash/',
 			output: 'dist/',
-			flexpath: '/home/adamh/flex_sdk/'
+			flexpath: '/Users/adamh/flex-sdk/'
 		},
 		watch: {
-			mediaelement: {
+			mediaelement_swf: {
 				files: ['<%= swf_src %>**/*.as'],
 				tasks: ['shell:swf']
 			},
-			mediaelement_swf: {
+			mediaelement: {
 				files: ['<%= concat.mediaelement.src %>'],
 				tasks: ['concat:mediaelement']
 			}
@@ -70,6 +70,9 @@ module.exports = function(grunt) {
 		shell: {
 			swf: {
 				command: '<%= dirs.flexpath %>bin/mxmlc -strict=false -warnings=true src/flash/FlashMediaElement.as -o dist/flashmediaelement.swf -library-path+="<%= dirs.flexpath %>lib" -include-libraries+=src/flash/flashmediaelement.swc -use-network=true -headless-server -static-link-runtime-shared-libraries'
+			},
+			swf_debug: {
+				command: '<%= shell.swf.command %> -debug=true	'
 			}
 	    }
 	});
