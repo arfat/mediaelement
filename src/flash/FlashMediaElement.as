@@ -716,7 +716,8 @@ package
 			//positionControls();
 
 			_output.appendText("resizehandler " + stage.stageWidth.toString() + "x" + stage.stageHeight.toString() + "\n");
-
+			_stageWidth = stage.stageWidth;
+			_stageHeight = stage.stageHeight;
 			repositionVideo();
 		}
 
@@ -921,7 +922,7 @@ package
 				fullscreen = false;
 			}
 
-			_output.appendText("positioning video "+stage.displayState+"\n");
+			_output.appendText("positioning video "+stage.displayState+' - '+_stageWidth+"x"+_stageHeight+"\n");
 
 			if (_mediaElement is VideoElement) {
 
