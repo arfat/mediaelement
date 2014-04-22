@@ -522,12 +522,19 @@ mejs.HtmlMediaElementShim = {
 				break;
 
 			case 'youtube':
+				var videoId_match = /v=([\w]+)|youtu\.be\/([\w]+)/.exec(playback.url);
+
+				if(!videoId_match || videoId_match.length < 2) {
+					options['error']('invalid YouTube url');
+					return false;
+				}
+
 				var youtubeSettings = {
 						container: container,
 						containerId: container.id,
 						pluginMediaElement: pluginMediaElement,
 						pluginId: pluginid,
-						videoId: playback.url.substr(playback.url.lastIndexOf('=')+1),
+						videoId: videoId_match[1] || videoId_match[2],
 						height: height,
 						width: width,
 						controls: controls
