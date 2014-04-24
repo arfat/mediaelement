@@ -695,8 +695,8 @@ mejs.YouTubeApi = {
 
 		var specialIEContainer,
 			youtubeUrl = !settings.controls ?
-				'//www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=0&amp;modestbranding=1&loop=0' :
-				'//www.youtube.com/v/'+settings.videoId+'?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=1&amp;modestbranding=1&loop=0';
+				'//www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=0&amp;modestbranding=1&loop=0&rel=0' :
+				'//www.youtube.com/v/'+settings.videoId+'?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=1&amp;modestbranding=1&loop=0&rel=0';
 
 		var flash_html = glamFlash(youtubeUrl, settings.width, settings.height, 10, {
 				'id': settings.pluginId,
