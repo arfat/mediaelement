@@ -609,6 +609,7 @@ mejs.PluginMediaElement.prototype['getAttribute'] = mejs.PluginMediaElement.prot
 mejs.PluginMediaElement.prototype['setAttribute'] = mejs.PluginMediaElement.prototype.setAttribute;
 mejs.PluginMediaElement.prototype['remove'] = mejs.PluginMediaElement.prototype.remove;
 
+/*jshint -W069*/
 // Handles calls from Flash and reports them as native <video/audio> events and properties
 window[pluginBridgeUniqueFn] = mejs.MediaPluginBridge = {
 
@@ -1148,7 +1149,8 @@ mejs.HtmlMediaElementShim = {
 						videoId: videoId_match[1] || videoId_match[2],
 						height: height,
 						width: width,
-						controls: controls
+						controls: controls,
+						autoplay: autoplay
 					};
 
 				if (glamFlash['majorVersion'] >= 10) {
@@ -1220,7 +1222,7 @@ mejs.YouTubeApi = {
 				'height': settings.height,
 				'width': settings.width,
 				'videoId': settings.videoId,
-				'playerVars': {'controls': settings.controls ? 1 : 0, 'wmode': 'opaque'},
+				'playerVars': {'controls': settings.controls ? 1 : 0, 'wmode': 'opaque', 'autoplay': settings.autoplay ? 1 : 0 },
 				'events': {
 					'onReady': function() {
 
@@ -1305,18 +1307,16 @@ mejs.YouTubeApi = {
 		this.flashPlayers[settings.pluginId] = settings;
 
 		var specialIEContainer,
-			youtubeUrl = !settings.controls ?
-				'//www.youtube.com/apiplayer?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=0&amp;modestbranding=1&loop=0&rel=0' :
-				'//www.youtube.com/v/'+settings.videoId+'?enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay=0&amp;controls=1&amp;modestbranding=1&loop=0&rel=0';
+			youtubeParams = 'enablejsapi=1&amp;playerapiid=' + settings.pluginId  + '&amp;version=3&amp;autoplay='+(settings.autoplay?1:0)+'&amp;controls='+(settings.controls?1:0)+'&amp;modestbranding=1&loop=0&rel=0',
+			youtubeUrl = !settings.controls ? '//www.youtube.com/apiplayer?' : '//www.youtube.com/v/'+settings.videoId+'?';
 
-		var flash_html = glamFlash(youtubeUrl, settings.width, settings.height, 10, {
+		var flash_html = glamFlash(youtubeUrl + youtubeParams, settings.width, settings.height, 10, {
 				'id': settings.pluginId,
 				'name': settings.pluginId,
 				'wmode': 'transparent'
 			});
 
 		if (mejs.MediaFeatures.isIE) {
-
 			specialIEContainer = document.createElement('div');
 			settings.container.appendChild(specialIEContainer);
 			specialIEContainer.outerHTML = flash_html;
