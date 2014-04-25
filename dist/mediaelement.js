@@ -1222,10 +1222,15 @@ mejs.YouTubeApi = {
 				'height': settings.height,
 				'width': settings.width,
 				'videoId': settings.videoId,
-				'playerVars': {'controls': settings.controls ? 1 : 0, 'wmode': 'opaque', 'autoplay': settings.autoplay ? 1 : 0 },
+				'playerVars': {
+					'controls': settings.controls ? 1 : 0,
+					'wmode': 'opaque',
+					'autoplay': settings.autoplay ? 1 : 0,
+					'rel': 0,
+					'modestbranding': 1
+				},
 				'events': {
 					'onReady': function() {
-
 						// hook up iframe object to MEjs
 						settings.pluginMediaElement.pluginApi = player;
 
