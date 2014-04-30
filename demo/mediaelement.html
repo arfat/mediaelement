@@ -27,7 +27,7 @@
 <video width="360" height="203" id="ytplayer" src="https://www.youtube.com/watch?v=nOEw9iiopwI" type="video/youtube" controls="controls"></video>
 
 
-<input type="button" id="pp" value="toggle" />
+<input type="button" id="ytpp" value="toggle" />
 <span id="yttime"></span>
 	
 
@@ -57,7 +57,7 @@ MediaElement('ytplayer', {plugins: ['flash'],mode: 'auto_plugin',success: functi
 		document.getElementById('yttime').innerHTML = me.currentTime;
 	}, false);
 	
-	document.getElementById('pp')['onclick'] = function() {
+	document.getElementById('ytpp')['onclick'] = function() {
 		if (me.paused)
 			me.play();
 		else
