@@ -1,0 +1,1 @@
+﻿package com.glam.iab.vast.vos{    public dynamic class Extension implements IExtension    {        public function Extension()        {        }    }}

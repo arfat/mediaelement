@@ -1,3 +1,273 @@
+/* Glam player */
+.mejs-container .mejs-glam-2 {
+}
+
+.mejs-glam-2 .mejs-controls .mejs-button button { 
+	outline: 0px; 
+}
+
+.mejs-glam-2 .mejs-controls {
+	background: #000000;
+	height: 30px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-playpause-button  button {
+	width: 20px;
+	height: 20px;
+	background: url(GlamSprite.png) 0 0;
+	padding: 0px;
+	margin: 5px 10px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-playpause-button  button:hover {
+	width: 20px;
+	height: 20px;
+	background: url(GlamSprite.png) -20px 0;
+	padding: 0px;
+	margin: 5px 10px;
+}
+
+.mejs-glam-2 .mejs-controls div.mejs-time-rail{
+	padding-top: 8px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-pause button  {
+	background: url(GlamSprite.png) -40px 0;
+}
+.mejs-glam-2 .mejs-controls .mejs-pause button:hover  {
+	background: url(GlamSprite.png) -60px 0;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-time span {
+	font-family: Helvetica;
+	color: #777777;
+	font-size: 15px;
+	border-radius: 0px;
+	-webkit-border-radius:0px;
+	-moz-border-radius:0px;
+	margin: 0px 5px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-time-rail .mejs-time-handle  {
+	display: inline;
+	margin: 0;
+	top: -14px;
+	width: 30px;
+	height: 30px;
+	border: 0;
+	background: url(GlamSprite.png) 0px -20px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-time-rail .mejs-time-handle:hover  {
+	background: url(GlamSprite.png) -30px -20px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-time-rail .mejs-time-buffering {
+	height: 4px;
+	background: #606060;
+	border-radius: 0px;
+}
+.mejs-glam-2 .mejs-controls .mejs-time-rail .mejs-time-loaded {
+	height: 4px;
+	background-color: #606060;
+	background: linear-gradient(rgba(96, 96, 96, 1),rgba(96, 96, 96, .8));	
+	border-radius: 0px;
+}
+.mejs-glam-2 .mejs-controls .mejs-time-rail .mejs-time-current {
+	height: 4px;
+	background-color: #B7B7B7;
+	background: linear-gradient(rgba(183, 183, 183, 1),rgba(183, 183, 183, .8));
+	border-radius: 0px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-time-rail .mejs-time-total {
+	border-radius: 0px;
+	background-color: #000000;
+	background: linear-gradient(rgba(0, 0, 0, 1),rgba(0, 0, 0, .8));
+}
+
+.mejs-glam-2 .mejs-duration {
+	background-image: url(glam-logo.png);
+	background-repeat: no-repeat;
+	background-position: right;
+	text-align: left;
+	width: 101px;
+	min-width: 101px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-mute button {
+	width: 20px;
+	height: 20px;
+	background: url(GlamSprite.png) 0px -50px;
+	margin: 5px;
+	padding: 0;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-mute button:hover {
+	width: 20px;
+	height: 20px;
+	background: url(GlamSprite.png) -20px -50px;
+	margin: 5px;
+	padding: 0;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-unmute button {
+	width: 20px;
+	height: 20px;
+	background: url(GlamSprite.png) -40px -50px;
+	margin: 5px;
+	padding: 0;	
+}
+
+.mejs-glam-2 .mejs-controls .mejs-unmute button:hover {
+	width: 20px;
+	height: 20px;
+	background: url(GlamSprite.png) -60px -50px;
+	margin: 5px;
+	padding: 0;	
+}
+
+.mejs-glam-2 .mejs-controls .mejs-fullscreen-button  {
+	display: none;
+}
+.mejs-glam-2 .mejs-controls .mejs-fullscreen-button  button {
+	display: none;
+}
+.mejs-glam-2 .mejs-controls .mejs-unfullscreen  button {
+	display: none;
+}
+
+.mejs-glam-2  .mejs-controls .mejs-volume-button .mejs-volume-slider {
+	visibility: hidden;
+}
+
+/* Glam player */
+.mejs-container.mejs-glam {
+
+}
+.mejs-glam .mejs-controls {
+	background: #000000;
+	height: 30px;
+}
+
+.mejs-glam .mejs-button,
+.mejs-glam .mejs-time {
+	position: relative;
+}
+
+.mejs-glam .mejs-controls .mejs-playpause-button  {
+	position: relative;
+}
+.mejs-glam .mejs-controls .mejs-playpause-button  button {
+	width: 20px;
+	height: 20px;
+	background: url(glam-play-2.png) no-repeat;
+	padding: 0px;
+	margin: 5px;
+}
+.mejs-glam .mejs-controls .mejs-pause button  {
+	background: url(glam-pause-2.png);
+}
+
+.mejs-glam .mejs-controls .mejs-time-rail .mejs-time-buffering {
+	height: 6px;
+	background: #c6c6c6;
+	border-radius: 0px;
+}
+.mejs-glam .mejs-controls .mejs-time-rail .mejs-time-loaded {
+	height: 6px;
+	background-color: #ff0000;	
+	border-radius: 0px;
+}
+.mejs-glam .mejs-controls .mejs-time-rail .mejs-time-current {
+	height: 6px;
+	background-color: #0000ff;
+	border-radius: 0px;
+}
+.mejs-glam .mejs-controls .mejs-time-rail .mejs-time-handle  {
+	display: inline;
+	margin: 0;
+	top: -11px;
+	width: 30px;
+	height: 30px;
+	border: 0;
+	background: url(glam-scrubb.png) no-repeat 0 0;	
+}
+.mejs-glam .mejs-controls .mejs-time-rail .mejs-time-float {	
+	display: none;
+}
+
+.mejs-glam .mejs-controls .mejs-fullscreen-button  {
+	display: none;
+}
+.mejs-glam .mejs-controls .mejs-fullscreen-button  button {
+	display: none;
+}
+.mejs-glam .mejs-controls .mejs-unfullscreen  button {
+	display: none;
+}
+.mejs-glam .mejs-controls .mejs-volume-button  {
+	position: relative;
+	width: 30px;
+	height: 30px;
+}
+.mejs-glam .mejs-controls .mejs-mute button {
+	background: url(glam-audio-off.png) no-repeat;
+	width: 30px;
+	height: 30px;
+	margin: 0;
+	padding: 0;
+}
+.mejs-glam .mejs-controls .mejs-unmute button {
+	background: url(glam-audio-on.png) no-repeat;
+	width: 30px;
+	height: 30px;
+	margin: 0;
+	padding: 0;	
+}
+.mejs-glam  .mejs-controls .mejs-volume-button .mejs-volume-slider {
+	background: #fff;
+	border: solid 1px #aaa;
+	border-width: 1px 1px 0 1px;
+	width: 22px;
+	height: 65px;
+	top: -65px;
+}
+.mejs-glam  .mejs-controls .mejs-volume-button .mejs-volume-total {
+	background: url(glam-audio-on.png);
+	width: 6px;
+	height: 50px;
+}
+.mejs-glam  .mejs-controls .mejs-volume-button .mejs-volume-current {
+	width: 6px;	
+	background: url(glam-audio-on.png);
+	height: 50px;
+}
+
+.mejs-glam  .mejs-controls .mejs-volume-button .mejs-volume-handle {
+	display: none;
+}
+
+.mejs-glam .mejs-controls .mejs-time span {
+	color: #777777;
+	font-size: 15px;
+}
+.mejs-glam .mejs-controls .mejs-currenttime-container  {
+	position: relative;	
+}
+.mejs-glam .mejs-controls .mejs-duration-container  {
+	position: relative;
+}
+
+.mejs-glam .mejs-controls .mejs-time  button{
+	padding-top: 4px;
+	color: #777777;
+	font-family: Helvetica;
+}
+.mejs-glam .mejs-controls .mejs-captions-button {
+	display: none;
+}
+/* END: TED player */
 /* TED player */
 .mejs-container.mejs-ted {
 
@@ -126,7 +396,7 @@
 }
 
 .mejs-ted .mejs-controls .mejs-time span {
-	color: #333;
+	color: #777777;
 }
 .mejs-ted .mejs-controls .mejs-currenttime-container  {
 	position: absolute;
@@ -166,7 +436,7 @@
 
 }
 .mejs-wmp .mejs-controls {
-	background: transparent url(controls-wmp-bg.png) center 16px no-repeat;
+	background: transparent url(controls-wmp-bg.png) left 16px no-repeat;
 	height: 65px;
 }
 

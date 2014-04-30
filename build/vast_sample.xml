@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<VAST version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd">
+    <Ad id="222296909">
+        <InLine>
+            <AdSystem version="2.0">DART_DFA</AdSystem>
+            <AdTitle>In-Stream Video</AdTitle>
+            <Description>parisian love - updated</Description>
+            <Survey></Survey>
+            <Impression id="DART"><![CDATA[http://ad.doubleclick.net/imp;v7;x;222296909;0-0;0;45922216;0/0;35460632/35478450/2;;~aopt=0/0/ff/0;~cs=h%3fhttp://s0.2mdn.net/dot.gif]]></Impression>
+
+            <Creatives>
+                <Creative sequence="1" AdID="">
+                    <Linear>
+                        <Duration>00:01:11</Duration>
+                        <TrackingEvents>
+                            <Tracking event="start"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=11;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="start"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=11;ecn1=1;etm1=1;]]></Tracking>
+                            <Tracking event="start"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=11;ecn1=1;etm1=2;]]></Tracking>
+                            <Tracking event="midpoint"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=18;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="complete"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=13;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="mute"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=16;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="pause"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=15;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="fullscreen"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=19;ecn1=1;etm1=0;]]></Tracking>
+                        </TrackingEvents>
+                        <AdParameters></AdParameters>
+                        <VideoClicks>
+                            <ClickThrough><![CDATA[http://google.com]]></ClickThrough>
+                            <ClickTracking id="DART"><![CDATA[http://ad.doubleclick.net/click%3Bh%3Dv8/3f38/3/0/%2a/f%3B222296909%3B0-0%3B0%3B45922216%3B255-0/0%3B35460632/35478450/2%3B%3B%7Eaopt%3D0/0/ff/0%3B%7Esscs%3D%3fhttp://s0.2mdn.net/dot.gif]]></ClickTracking>
+                             <ClickTracking id="GLAM"><![CDATA[http://ad.glam.net/click%3Bh%3Dv8/3f38/3/0/%2a/f%3B222296909%3B0-0%3B0%3B45922216%3B255-0/0%3B35460632/35478450/2%3B%3B%7Eaopt%3D0/0/ff/0%3B%7Esscs%3D%3fhttp://s0.2mdn.net/dot.gif]]></ClickTracking>
+                        </VideoClicks>
+                        <MediaFiles>
+                            <MediaFile id="1" delivery="progressive" type="video/mp4" bitrate="766" width="854" height="480">
+                                <![CDATA[http://gadcreatives.glam.com/glamadapt_files/create/prod/50003227/2/500155253-expanded-cgVideoMc.mp4]]>
+                            </MediaFile>
+                        </MediaFiles>
+                    </Linear>
+                </Creative>
+
+                <Creative sequence="2" AdID="">
+                    <NonLinearAds>
+                        <TrackingEvents>
+                            <Tracking event="start"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=11;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="midpoint"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=18;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="complete"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=13;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="mute"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=16;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="pause"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=15;ecn1=1;etm1=0;]]></Tracking>
+                            <Tracking event="fullscreen"><![CDATA[http://ad.doubleclick.net/activity;src=1379578;met=1;v=1;pid=45922216;aid=222296909;ko=0;cid=35460632;rid=35478450;rv=2;timestamp=4581346;eid1=19;ecn1=1;etm1=0;]]></Tracking>
+                        </TrackingEvents>
+                        <NonLinear id="1" width="400" height="150" scalable="false" maintainAspectRatio="false" >
+                            <StaticResource creativeType="image/jpeg"><![CDATA[http://s0.2mdn.net/1379578/PID_1244559_1281625520000_google.jpg]]></StaticResource>
+                            <NonLinearClickThrough><![CDATA[http://google.com]]></NonLinearClickThrough>
+                            <AdParameters></AdParameters>
+                        </NonLinear>
+                    </NonLinearAds>
+                </Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+</VAST>

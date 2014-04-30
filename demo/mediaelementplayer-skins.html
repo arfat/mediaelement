@@ -5,7 +5,7 @@
 	<title>HTML5 MediaElement</title>	
 	
 	<script src="../build/jquery.js"></script>	
-	<script src="../build/mediaelement-and-player.min.js"></script>
+	<script src="../build/mediaelement-and-player.js"></script>
 	<script src="testforfiles.js"></script>	
 	<link rel="stylesheet" href="../build/mediaelementplayer.min.css" />
         
@@ -17,7 +17,16 @@
 
 <p>Skins Demo. Just add a class on the &lt;video class="mejs-myskin" &gt; and then follow the examples in the mejs-skins.css file</p>
 
-<h2>Default Skin</h2>
+
+
+<h2>Default Skin - Glam </h2>
+
+<video class="mejs-glam-2"  width="640" height="360" src="../media/echo-hereweare.mp4" type="video/mp4" 
+	id="player1" poster="../media/echo-hereweare.jpg" 
+	controls="controls" preload="none"></video>
+
+<input type="button" id="pp" value="toggle" />
+<!-- <h2>Default Skin</h2>
 
 <video width="640" height="360" src="../media/echo-hereweare.mp4" type="video/mp4" 
 	id="player1" poster="../media/echo-hereweare.jpg" 
@@ -34,16 +43,22 @@
 
 <video class="mejs-wmp" width="640" height="360" src="../media/echo-hereweare.mp4" type="video/mp4" 
 	id="player1" poster="../media/echo-hereweare.jpg" 
-	controls="controls" preload="none"></video>
+	controls="controls" preload="none"></video> -->
 
 
 <script>
 $('audio,video').mediaelementplayer({
 	success: function(player, node) {
 		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
+		console.log(player.container +" :  " +player.id);
+		document.getElementById('pp')['onclick'] = function() {
+			if (player.paused)
+				player.play();
+			else
+				player.pause();
+		};
 	}
 });
-
 </script>
 
 

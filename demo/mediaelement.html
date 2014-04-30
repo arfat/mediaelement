@@ -14,20 +14,47 @@
 <p>This is only the Flash/Silverlight Shim for older browers or browsers without the codec you need. It is not a full player.</p>
 
 <h2>MP4 video (as src)</h2>
+
+<h3>Normal Video</h3>
+<br>
 <video width="360" height="203" id="player1" src="../media/echo-hereweare.mp4" type="video/mp4" controls="controls"></video>
 
 <input type="button" id="pp" value="toggle" />
 <span id="time"></span>
+<br><br>
+<h3>Youtube Video</h3>
+<br>
+<video width="360" height="203" id="ytplayer" src="https://www.youtube.com/watch?v=nOEw9iiopwI" type="video/youtube" controls="controls"></video>
+
+
+<input type="button" id="pp" value="toggle" />
+<span id="yttime"></span>
 	
 
 	
 <script>
-MediaElement('player1', {success: function(me) {
+MediaElement('player1', {plugins: ['flash'],mode: 'auto_plugin',success: function(me) {
 	
 	me.play();
 	
 	me.addEventListener('timeupdate', function() {
 		document.getElementById('time').innerHTML = me.currentTime;
+	}, false);
+	
+	document.getElementById('pp')['onclick'] = function() {
+		if (me.paused)
+			me.play();
+		else
+			me.pause();
+	};
+
+}});
+MediaElement('ytplayer', {plugins: ['flash'],mode: 'auto_plugin',success: function(me) {
+	
+	me.play();
+	
+	me.addEventListener('timeupdate', function() {
+		document.getElementById('yttime').innerHTML = me.currentTime;
 	}, false);
 	
 	document.getElementById('pp')['onclick'] = function() {

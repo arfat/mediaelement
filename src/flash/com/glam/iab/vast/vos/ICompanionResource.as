@@ -1,0 +1,1 @@
+﻿package com.glam.iab.vast.vos{    public interface ICompanionResource    {            }}

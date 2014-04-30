@@ -1,0 +1,1 @@
+﻿package com.glam.iab.vast.vos{    public class CompanionAds    {        public var companions:Vector.<Companion>;    }}
