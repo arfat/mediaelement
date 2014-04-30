@@ -87,12 +87,47 @@
 }
 
 .mejs-glam-2 .mejs-duration {
-	background-image: url(glam-logo.png);
 	background-repeat: no-repeat;
 	background-position: right;
 	text-align: left;
-	width: 101px;
-	min-width: 101px;
+	-moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none; /*Introduced in IE 10. See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/*/
+   user-select: none;
+   cursor:default;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-logo {
+	min-width: 48px;
+	height: 30px;
+	background: url(GlamSprite.png) 0px -70px;
+	/*margin: 5px;*/
+	padding: 0;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-logo:hover {
+	min-width: 48px;
+	height: 30px;
+	background: url(GlamSprite.png) -48px -70px;
+	/*margin: 5px;*/
+	padding: 0;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-share button {
+	width: 22px;
+	height: 20px;
+	background: url(GlamSprite.png) 0px -100px;
+	margin: 5px;
+	padding: 0;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-share button:hover {
+	width: 22px;
+	height: 20px;
+	background: url(GlamSprite.png) -22px -100px;
+	margin: 5px;
+	padding: 0;
 }
 
 .mejs-glam-2 .mejs-controls .mejs-mute button {
@@ -128,13 +163,35 @@
 }
 
 .mejs-glam-2 .mejs-controls .mejs-fullscreen-button  {
-	display: none;
+	/*display: none;*/
 }
 .mejs-glam-2 .mejs-controls .mejs-fullscreen-button  button {
-	display: none;
+	width: 22px;
+	height: 20px;
+	background: url(GlamSprite.png) -0px -120px;
+	margin: 5px;
+	padding: 0;
+}
+.mejs-glam-2 .mejs-controls .mejs-fullscreen-button  button:hover {
+	width: 22px;
+	height: 20px;
+	background: url(GlamSprite.png) -22px -120px;
+	margin: 5px;
+	padding: 0;
 }
 .mejs-glam-2 .mejs-controls .mejs-unfullscreen  button {
-	display: none;
+	width: 22px;
+	height: 20px;
+	background: url(GlamSprite.png) -44px -120px;
+	margin: 5px;
+	padding: 0;
+}
+.mejs-glam-2 .mejs-controls .mejs-unfullscreen  button:hover {
+	width: 22px;
+	height: 20px;
+	background: url(GlamSprite.png) -66px -120px;
+	margin: 5px;
+	padding: 0;
 }
 
 .mejs-glam-2  .mejs-controls .mejs-volume-button .mejs-volume-slider {
@@ -282,6 +339,7 @@
 	position: absolute;
 	background: #ddd;
 }
+
 .mejs-ted .mejs-controls .mejs-time-rail .mejs-time-total {
 	background-color: none;
 	background: url(controls-ted.png) repeat-x 0 -52px;

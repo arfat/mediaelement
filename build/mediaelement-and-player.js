@@ -2012,7 +2012,7 @@ if (typeof jQuery != 'undefined') {
 		// force Android's native controls
 		AndroidUseNativeControls: false,
 		// features to show
-		features: ['playpause','current','progress','duration','tracks','volume','fullscreen'],
+		features: ['playpause','current','progress','duration','tracks','logo','share','volume','fullscreen'],
 		// only for dynamic
 		isVideo: true,
 
@@ -3146,7 +3146,52 @@ if (typeof jQuery != 'undefined') {
 	window.MediaElementPlayer = mejs.MediaElementPlayer;
 
 })(mejs.$);
+/************************************************************************/
+/************************* Code added by Ankur ***************************/
+/************************************************************************/
+(function($) {
 
+	$.extend(mejs.MepDefaults, {
+		logotext: mejs.i18n.t('logo')
+	});
+
+	// PLAY/pause BUTTON
+	$.extend(MediaElementPlayer.prototype, {
+		buildlogo: function(player, controls, layers, media) {
+			var 
+				t = this,
+				logo = 
+				$('<div class="mejs-logo" > </div>')
+				.appendTo(controls)
+		}
+	});
+	
+})(mejs.$);
+
+(function($) {
+
+	$.extend(mejs.MepDefaults, {
+		sharetext: mejs.i18n.t('share')
+	});
+
+	// PLAY/pause BUTTON
+	$.extend(MediaElementPlayer.prototype, {
+		buildshare: function(player, controls, layers, media) {
+			var 
+				t = this,
+				share = 
+				$('<div class="mejs-button mejs-share" >' +
+					'<button type="button" aria-controls="' + t.id + '" title="' + t.options.sharetext + '" aria-label="' + t.options.sharetext + '"></button>' +
+				'</div>')
+				.appendTo(controls)
+		}
+	});
+	
+})(mejs.$);
+
+/************************************************************************/
+/************************************************************************/
+/************************************************************************/
 (function($) {
 
 	$.extend(mejs.MepDefaults, {
