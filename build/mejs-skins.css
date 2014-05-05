@@ -45,7 +45,7 @@
 	border-radius: 0px;
 	-webkit-border-radius:0px;
 	-moz-border-radius:0px;
-	margin: 0px 5px;
+	margin: 3px 5px;
 }
 
 .mejs-glam-2 .mejs-controls .mejs-time-rail .mejs-time-handle  {
@@ -97,7 +97,9 @@
    user-select: none;
    cursor:default;
 }
-
+/************************************************************************/
+/************************* Code added by Ankur ***************************/
+/************************************************************************/
 .mejs-glam-2 .mejs-controls .mejs-logo {
 	min-width: 48px;
 	height: 30px;
@@ -130,6 +132,63 @@
 	padding: 0;
 }
 
+
+.mejs-glam-2 .mejs-controls .mejs-sharebg {
+	width: 30px;
+	height: 149px;
+	background-color: rgba(0, 0, 0, 100);
+	margin-top:-159px;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-sharebg:after,
+.mejs-glam-2 .mejs-controls .mejs-sharebg::after {
+    border-left: 10px solid rgba(0, 0, 0, 0);
+    border-right: 10px solid rgba(0, 0, 0, 0);
+    border-top: 10px solid rgba(0, 0, 0, 100);
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    top: -10px;
+    margin-left: -22px;
+}
+
+.mejs-sharebtns
+{
+	width: 18px !important;
+	height: 18px !important;
+	margin-top:10px !important;
+	margin-left:6px !important;
+	cursor: pointer;
+}
+
+.mejs-glam-2 .mejs-controls .mejs-twbtn
+{
+	background: url(tw.png);
+}
+
+.mejs-glam-2 .mejs-controls .mejs-gplusbtn
+{
+	background: url(gplus.png);	
+}
+.mejs-glam-2 .mejs-controls .mejs-pinbtn
+{
+	background: url(pin.png);	
+}
+.mejs-glam-2 .mejs-controls .mejs-fbbtn
+{
+	background: url(fb.png);
+}
+.mejs-glam-2 .mejs-controls .mejs-emailbtn
+{
+	margin-bottom:10px;
+	background: url(email.png);	
+}
+
+
+/************************************************************************/
+/************************************************************************/
+/************************************************************************/
 .mejs-glam-2 .mejs-controls .mejs-mute button {
 	width: 20px;
 	height: 20px;
