@@ -3184,6 +3184,20 @@ if (typeof jQuery != 'undefined') {
 					'<button type="button" aria-controls="' + t.id + '" title="' + t.options.sharetext + '" aria-label="' + t.options.sharetext + '"></button>' +
 				'</div>')
 				.appendTo(controls)
+				.mouseover(function(e) {
+					e.preventDefault();
+					shareOver.css("display","block");
+					return false;
+				})
+				.mouseout(function(e) {
+					e.preventDefault();
+					shareOver.css("display","none");
+					return false;
+				}),
+				shareOver=$('<div style="height:149px;width:30px;background:url(\'shareoverlay.png\');margin-top:-149px;display:none;">&nbsp;</div>')
+				.appendTo(share);
+
+
 		}
 	});
 	
