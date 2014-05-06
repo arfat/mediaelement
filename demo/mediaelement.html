@@ -33,9 +33,9 @@
 
 	
 <script>
-MediaElement('player1', {plugins: ['flash'],mode: 'auto_plugin',success: function(me) {
+MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false'],mode: 'auto_plugin',success: function(me) {
 	
-	me.play();
+	//me.play();
 	
 	me.addEventListener('timeupdate', function() {
 		document.getElementById('time').innerHTML = me.currentTime;
@@ -49,9 +49,9 @@ MediaElement('player1', {plugins: ['flash'],mode: 'auto_plugin',success: functio
 	};
 
 }});
-MediaElement('ytplayer', {plugins: ['flash'],mode: 'auto_plugin',success: function(me) {
+MediaElement('ytplayer', {plugins: ['flash'], pluginVars:['autoplay=false'],mode: 'auto_plugin',success: function(me) {
 	
-	me.play();
+	//me.play();
 	
 	me.addEventListener('timeupdate', function() {
 		document.getElementById('yttime').innerHTML = me.currentTime;
