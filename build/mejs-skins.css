@@ -222,7 +222,7 @@
 }
 
 .mejs-glam-2 .mejs-controls .mejs-fullscreen-button  {
-	/*display: none;*/
+	display: none;
 }
 .mejs-glam-2 .mejs-controls .mejs-fullscreen-button  button {
 	width: 22px;
