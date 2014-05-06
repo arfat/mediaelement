@@ -3179,7 +3179,18 @@ if (typeof jQuery != 'undefined') {
 		buildshare: function(player, controls, layers, media) {
 			var 
 				t = this,
-				share = 
+				shareUrl,
+				pluginVars = t.options.pluginVars;
+
+			for (var i = 0; i < pluginVars.length; i++) {
+				if(pluginVars[i].indexOf('share_url') !== -1)
+				{
+					shareUrl = pluginVars[i].substring(pluginVars[i].indexOf('=')+1,pluginVars[i].length);
+					break;
+				}
+			};
+				
+			var share = 
 				$('<div class="mejs-button mejs-share" >' +
 					'<button type="button" aria-controls="' + t.id + '" title="' + t.options.sharetext + '" aria-label="' + t.options.sharetext + '"></button>' +
 				'</div>')
@@ -3200,28 +3211,28 @@ if (typeof jQuery != 'undefined') {
 				.appendTo(shareOver)
 				.click(function(e) {
 					e.preventDefault();
-					window.open('https://twitter.com/intent/tweet?&url=http://www.glam.com','','width=685,height=420');
+					window.open('https://twitter.com/intent/tweet?&url='+shareUrl,'','width=685,height=420');
 					return false;
 				}),
 				fbbtn=$('<div class="mejs-sharebtns mejs-fbbtn">&nbsp;</div>')
 				.appendTo(shareOver)
 				.click(function(e) {
 					e.preventDefault();
-					window.open('https://www.facebook.com/sharer/sharer.php?u=http://www.glam.com','','width=685,height=350');
+					window.open('https://www.facebook.com/sharer/sharer.php?u='+shareUrl,'','width=685,height=350');
 					return false;
 				}),
 				pinbtn=$('<div class="mejs-sharebtns mejs-pinbtn">&nbsp;</div>')
 				.appendTo(shareOver)
 				.click(function(e) {
 					e.preventDefault();
-					window.open('http://pinterest.com/pin/create/button/?url=http://www.glam.com','','width=750,height=630');
+					window.open('http://pinterest.com/pin/create/button/?url='+shareUrl,'','width=750,height=630');
 					return false;
 				}),
 				gplusbtn=$('<div class="mejs-sharebtns mejs-gplusbtn">&nbsp;</div>')
 				.appendTo(shareOver)
 				.click(function(e) {
 					e.preventDefault();
-					window.open('https://plus.google.com/share?url=http://www.glam.com','','width=685,height=350');
+					window.open('https://plus.google.com/share?url='+shareUrl,'','width=685,height=350');
 					return false;
 				}),
 				emailbtn=$('<div class="mejs-sharebtns mejs-emailbtn">&nbsp;</div>')

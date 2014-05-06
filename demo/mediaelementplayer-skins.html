@@ -48,6 +48,11 @@
 
 <script>
 $('audio,video').mediaelementplayer({
+	'pluginVars': [
+					'vxml=http://www35.glam.com/gad/glamadapt_psrv.act?sz=555x2;ga_output=plain;reqsq=0;vschema=vast1;csz=300x250;afid=19565145;native=yes;_g_cv=4',
+					'share_url=http://example.com/share', 
+			   		'skipcnt=0'
+				   ],
 	success: function(player, node) {
 		$('#' + node.id + '-mode').html('mode: ' + player.pluginType);
 		console.log(player.container +" :  " +player.id);
