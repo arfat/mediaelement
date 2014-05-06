@@ -3,7 +3,8 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		dirs: {
 			src: 'src/',
-			me_src: '<%= dirs.src %>js_mediaelement/',
+			js_library: '<%= dirs.src %>js_library/',
+			js_skin: '<%= dirs.src %>js_skin/',
 			swf_src: '<%= dirs.src %>flash/',
 			output: 'dist/',
 			flexpath: '/Users/adamh/flex-sdk/'
@@ -22,7 +23,8 @@ module.exports = function(grunt) {
 			options: {
 				sub: true
 			},
-			mediaelement: ['<%= concat.mediaelement.src %>']
+			mediaelement: ['<%= concat.mediaelement.src %>'],
+			me_skin: ['<%= concat.me_skin.src %>']
 		},
 		concat: {
 			mediaelement: {
@@ -34,37 +36,41 @@ module.exports = function(grunt) {
 					footer: 'return mejs.MediaElement;});'
 				},
 				src: [
-					'<%= dirs.me_src %>me-namespace.js',
-					'<%= dirs.me_src %>me-utility.js',
-				//	'<%= dirs.me_src %>me-plugindetector.js',
-					'<%= dirs.me_src %>me-featuredetection.js',
-					'<%= dirs.me_src %>me-mediaelements.js',
-					'<%= dirs.me_src %>me-shim.js',
+					'<%= dirs.js_library %>me-namespace.js',
+					'<%= dirs.js_library %>me-utility.js',
+				//	'<%= dirs.js_library %>me-plugindetector.js',
+					'<%= dirs.js_library %>me-featuredetection.js',
+					'<%= dirs.js_library %>me-mediaelements.js',
+					'<%= dirs.js_library %>me-shim.js',
 
 				],
 				dest: '<%= dirs.output %>mediaelement.js'
 			},
 
-			me_player: {
+			me_skin: {
 				//TODO: remove jquery and add i18n to player
-				//'<%= dirs.js_src %>me-i18n.js'
-				//'<%= dirs.src %>me-i18n-locale-de.js')
-				//'<%= dirs.src %>me-i18n-locale-zh.js')
+				//'<%= dirs.js_skin %>me-i18n.js'
+				//'<%= dirs.js_skin %>me-i18n-locale-de.js'
+				//'<%= dirs.js_skin %>me-i18n-locale-zh.js'
 				src: [
-					'<%= dirs.js_src %>mep-header.js',
-					'<%= dirs.js_src %>mep-library.js',
-					'<%= dirs.js_src %>mep-player.js',
-					'<%= dirs.js_src %>mep-feature-playpause.js',
-					'<%= dirs.js_src %>mep-feature-stop.js',
-					'<%= dirs.js_src %>mep-feature-progress.js',
-					'<%= dirs.js_src %>mep-feature-time.js',
-					'<%= dirs.js_src %>mep-feature-volume.js',
-					'<%= dirs.js_src %>mep-feature-fullscreen.js',
-					'<%= dirs.js_src %>mep-feature-tracks.js',
-					'<%= dirs.js_src %>mep-feature-contextmenu.js',
-					'<%= dirs.js_src %>mep-feature-postroll.js'
+					'<%= dirs.js_skin %>mep-header.js',
+					'<%= dirs.js_skin %>mep-library.js',
+					'<%= dirs.js_skin %>mep-player.js',
+					'<%= dirs.js_skin %>mep-feature-playpause.js',
+					'<%= dirs.js_skin %>mep-feature-stop.js',
+					'<%= dirs.js_skin %>mep-feature-progress.js',
+					'<%= dirs.js_skin %>mep-feature-time.js',
+					'<%= dirs.js_skin %>mep-feature-volume.js',
+					'<%= dirs.js_skin %>mep-feature-fullscreen.js',
+					'<%= dirs.js_skin %>mep-feature-tracks.js',
+					'<%= dirs.js_skin %>mep-feature-contextmenu.js',
+					'<%= dirs.js_skin %>mep-feature-postroll.js'
 				],
 				dest: '<%= dirs.output %>mediaelementplayer.js'
+			},
+			skin_css: {
+				src: [ '<%= dirs.src %>css/mediaelementplayer.css'],
+				dest: '<%= dirs.output %>mediaelementplayer.css'
 			}
 		},
 		shell: {
@@ -74,7 +80,7 @@ module.exports = function(grunt) {
 			swf_debug: {
 				command: '<%= shell.swf.command %> -debug=true	'
 			}
-	    }
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -82,6 +88,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-shell');
 
+	grunt.registerTask('skin', ['jshint:me_skin', 'concat:me_skin', 'concat:skin_css']);
 	grunt.registerTask('default', ['jshint:mediaelement', 'concat:mediaelement']);
 };
 
