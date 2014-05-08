@@ -507,7 +507,7 @@ mejs.HtmlMediaElementShim = {
 						'id': pluginid,
 						'name': pluginid,
 						'flashvars': initVars.join('&amp;'),
-						'wmode': 'transparent',
+						'wmode': 'opaque',
 						'quality': 'high'
 					});
 
@@ -707,7 +707,7 @@ mejs.YouTubeApi = {
 		var flash_html = glamFlash(youtubeUrl + youtubeParams, settings.width, settings.height, 10, {
 				'id': settings.pluginId,
 				'name': settings.pluginId,
-				'wmode': 'transparent'
+				'wmode': 'opaque'
 			});
 
 		if (mejs.MediaFeatures.isIE) {
