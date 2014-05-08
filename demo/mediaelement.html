@@ -17,14 +17,14 @@
 
 <h3>Normal Video</h3>
 <br>
-<video width="360" height="203" id="player1" src="../media/echo-hereweare.mp4" type="video/mp4" controls="controls"></video>
+<video width="360" height="233" id="player1" src="../media/echo-hereweare.mp4" type="video/mp4" controls="controls"></video>
 
 <input type="button" id="pp" value="toggle" />
 <span id="time"></span>
 <br><br>
 <h3>Youtube Video</h3>
 <br>
-<video width="360" height="203" id="ytplayer" src="https://www.youtube.com/watch?v=nOEw9iiopwI" type="video/youtube" controls="controls"></video>
+<video width="360" height="233" id="ytplayer" src="https://www.youtube.com/watch?v=vJ5EA6EoqV8" type="video/youtube" controls="controls"></video>
 
 
 <input type="button" id="ytpp" value="toggle" />
@@ -33,7 +33,7 @@
 
 	
 <script>
-MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false'],mode: 'auto_plugin',success: function(me) {
+MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false','poster=http://blog.gettyimages.com/wp-content/uploads/2013/01/Siberian-Tiger-Running-Through-Snow-Tom-Brakefield-Getty-Images-200353826-001.jpg'],mode: 'auto_plugin',success: function(me) {
 	
 	//me.play();
 	
@@ -49,7 +49,7 @@ MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false'],mode: 
 	};
 
 }});
-MediaElement('ytplayer', {plugins: ['flash'], pluginVars:['autoplay=false'],mode: 'auto_plugin',success: function(me) {
+MediaElement('ytplayer', {plugins: ['flash'], pluginVars:['autoplay=false','poster=http://img.youtube.com/vi/vJ5EA6EoqV8/mqdefault.jpg'],mode: 'auto_plugin',success: function(me) {
 	
 	//me.play();
 	
