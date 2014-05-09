@@ -37,7 +37,11 @@
                                       <![CDATA[http://gadcreatives.glam.com/glamadapt_files/create/prod/50000459/9/k4ODhuMjon6oLaoXwOrbY4zxxuWluxyj_416_276_1200.mp4]]>
                                </MediaFile>
                           </MediaFiles>
-                          <TrackingEvents>
+
+                           <TrackingEvents>
+                              <Tracking event="adSkipped">
+                           <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:videostart,s:0,n:]]>  
+                        </Tracking>
                           		<Tracking event="start">
 				                   <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:videostart,s:0,n:]]>  
 				                </Tracking>
