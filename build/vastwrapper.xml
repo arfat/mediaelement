@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VAST version="2.0">
+  <Ad id="6654644">
+  <Wrapper>
+    <AdSystem>Acudeo Compatible</AdSystem>
+    <VASTAdTagURI>http://test.ankurpatel18.com/glam/vasttest/vastwrapper1.xml</VASTAdTagURI>
+    <Error>http://myErrorURL/wrapper/error</Error>
+    <Impression>http://www.glam.com/wrapper/impression</Impression>
+    <Creatives>
+      <Creative AdID="6654644">
+        <Linear>
+          <TrackingEvents>
+            <Tracking event="creativeView">http://www.glam.com/wrapper/creativeView</Tracking>
+            <Tracking event="start">http://www.glam.com/wrapper/start</Tracking>
+            <Tracking event="midpoint">http://www.glam.com/wrapper/midpoint</Tracking>
+            <Tracking event="firstQuartile">http://www.glam.com/wrapper/firstQuartile</Tracking>
+            <Tracking event="thirdQuartile">http://www.glam.com/wrapper/thirdQuartile</Tracking>
+            <Tracking event="complete">http://www.glam.com/wrapper/complete</Tracking>
+            <Tracking event="mute">http://www.glam.com/wrapper/mute</Tracking>
+            <Tracking event="unmute">http://www.glam.com/wrapper/unmute</Tracking>
+            <Tracking event="pause">http://www.glam.com/wrapper/pause</Tracking>
+            <Tracking event="resume">http://www.glam.com/wrapper/resume</Tracking>
+            <Tracking event="fullscreen">http://www.glam.com/wrapper/fullscreen</Tracking> 
+          </TrackingEvents>
+        </Linear>
+      </Creative>
+      <Creative>
+        <Linear>
+          <VideoClicks>
+            <ClickTracking>http://www.glam.com/wrapper/click</ClickTracking>
+          </VideoClicks>
+        </Linear>
+      </Creative>
+    </Creatives>
+  </Wrapper>
+  </Ad>
+</VAST>

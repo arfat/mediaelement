@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VAST version="2.0">
+    <Ad id="500036194">
+        <InLine>
+            <AdSystem>GlamMedia</AdSystem>
+            <AdTitle><![CDATA[]]></AdTitle>
+            <Description><![CDATA[]]></Description>
+            <Impression>
+                <![CDATA[http://www30a1.glam.com/gad/log.act?-_-gaevt_imps-reqsq_1-advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_]]>
+            </Impression>
+          <Creatives>
+                <Creative sequence="1" id="500036194">
+                    <Linear>
+                          <Duration>00:00:15</Duration>
+                          <VideoClicks>
+                               <ClickThrough>
+                                      <![CDATA[http://www30a1.glam.com/gad/log.act?-_-gaevt_clicks-advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_-click_C-C-http://www.glam.com/]]>
+                               </ClickThrough>
+                               <ClickTracking id="ThirdParty">
+                                      <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:exit,s:0,n:]]>
+                               </ClickTracking>
+                          </VideoClicks>
+                          <MediaFiles>        
+                               <MediaFile delivery="progressive" bitrate="300" width="416" height="276" type="video/mp4">
+                                      <![CDATA[http://gadcreatives.glam.com/glamadapt_files/create/prod/50000459/9/k4ODhuMjon6oLaoXwOrbY4zxxuWluxyj_416_276_300.mp4]]>
+                               </MediaFile>
+                               <MediaFile delivery="progressive" bitrate="500" width="416" height="276" type="video/mp4">
+                                      <![CDATA[http://gadcreatives.glam.com/glamadapt_files/create/prod/50000459/9/k4ODhuMjon6oLaoXwOrbY4zxxuWluxyj_416_276_500.mp4]]>
+                               </MediaFile>
+                               <MediaFile delivery="progressive" bitrate="600" width="640" height="426" type="video/mp4">
+                                      <![CDATA[http://gadcreatives.glam.com/glamadapt_files/create/prod/50000459/9/k4ODhuMjon6oLaoXwOrbY4zxxuWluxyj_640_426_600.mp4]]>
+                               </MediaFile>
+                               <MediaFile delivery="progressive" bitrate="900" width="416" height="276" type="video/mp4">
+                                      <![CDATA[http://gadcreatives.glam.com/glamadapt_files/create/prod/50000459/9/k4ODhuMjon6oLaoXwOrbY4zxxuWluxyj_416_276_900.mp4]]>
+                               </MediaFile>
+                               <MediaFile delivery="progressive" bitrate="1200" width="416" height="276" type="video/mp4">
+                                      <![CDATA[http://gadcreatives.glam.com/glamadapt_files/create/prod/50000459/9/k4ODhuMjon6oLaoXwOrbY4zxxuWluxyj_416_276_1200.mp4]]>
+                               </MediaFile>
+                          </MediaFiles>
+
+                           <TrackingEvents>
+                              <Tracking event="adSkipped">
+                           <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:videostart,s:0,n:]]>  
+                        </Tracking>
+                              <Tracking event="start">
+                           <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:videostart,s:0,n:]]>  
+                        </Tracking>
+                                <Tracking event="start">
+                             <![CDATA[http://b.scorecardresearch.com/p?c1=1&c2=6035233&c3=&c4=&c5=01]]>
+                        </Tracking>
+                                <Tracking event="start">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=vast&ev=start&lr=advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_&r=1398225699]]>   
+                        </Tracking>
+                               <Tracking event="firstQuartile">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:video25,s:0,n:;e:timer,s:0,c:1,d:3750,n:videoplay]]>
+                        </Tracking>
+                        <Tracking event="firstQuartile">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=vast&ev=firstQuartile&lr=advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_&r=1398225699]]>
+                        </Tracking>
+                               <Tracking event="midpoint">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:video50,s:0,n:;e:timer,s:0,c:1,d:7500,n:videoplay]]>
+                        </Tracking>
+                        <Tracking event="midpoint">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=vast&ev=midpoint&lr=advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_&r=1398225699]]>
+                        </Tracking>
+                                <Tracking event="thirdQuartile">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:video75,s:0,n:;e:timer,s:0,c:1,d:11250,n:videoplay]]>
+                        </Tracking>
+                        <Tracking event="thirdQuartile">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=vast&ev=thirdQuartile&lr=advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_&r=1398225699]]>
+                        </Tracking>
+                               <Tracking event="complete">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:videoend,s:0,n:;e:timer,s:0,c:1,d:15000,n:videoplay]]>
+                        </Tracking>
+                        <Tracking event="complete">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=vast&ev=complete&lr=advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_&r=1398225699]]>
+                        </Tracking>
+                               <Tracking event="mute">
+                                      <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:mute,s:0,n:]]>
+                               </Tracking>
+                               <Tracking event="mute">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=vast&ev=mute&lr=advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_&r=1398225699]]>
+                        </Tracking>
+                              <Tracking event="unmute">
+                            <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:unmute,s:0,n:]]>
+                        </Tracking>
+                        <Tracking event="pause">
+                            <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:pause,s:0,n:]]>
+                        </Tracking>
+                        <Tracking event="pause">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=vast&ev=pause&lr=advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_&r=1398225699]]>
+                        </Tracking>
+                        <Tracking event="resume">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:resume,s:0,n:]]>
+                        </Tracking>
+                        <Tracking event="rewind">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:rewind,s:0,n:]]>
+                        </Tracking>
+                        <Tracking event="forward">
+                             <![CDATA[http://www13.glam.com/clear.gif?a=e&b=5555&m=3333&t=s&r=1398225699&i=500036194&d=5000172682&p=19565145&w=.199080099jfn5jc&s=112441139822481968011&edge=335f0f40b88595023ed808248ec917d8&cc=in&rc=mh&e=e:forward,s:0,n:]]>
+                        </Tracking>
+                        <Tracking event=" ">
+                            <![CDATA[]]>
+                        </Tracking>
+                          </TrackingEvents>
+                    </Linear>
+                </Creative>
+                <Creative sequence="1" id="500036194">
+                    <CompanionAds>
+                          <Companion width="300" height="250">
+                               <HTMLResource>
+                                      <![CDATA[<iframe width=300 height=250 frameborder=no scrolling=no src="http://www25.glam.com/files/gadget-store/video/companionadiframe.html#data=advid_50000459-adid_5000172682-afid_19565145-ord_.199080099jfn5jc-sz_555x2-reqid_335f0f40b88595023ed808248ec917d8-reqindex_1-crid_500036194-srcid_2-aipid_201404222032-sid_112441139822481968011-cc_in-rc_mh-lrid_500036194-vd_15-mid_-cid_-did_-ap_"></iframe>]]>
+                               </HTMLResource>                          </Companion>
+                    </CompanionAds>
+                </Creative>
+            </Creatives>
+        </InLine>
+    </Ad>
+</VAST>
