@@ -922,6 +922,8 @@ mejs.HtmlMediaElementShim = {
 			preload =  htmlMediaElement.getAttribute('preload'),
 			controls =  htmlMediaElement.getAttribute('controls'),
 			playback,
+			oldH,
+			oldW,
 			prop;
 
 		// extend options
@@ -948,6 +950,591 @@ mejs.HtmlMediaElementShim = {
 					htmlMediaElement.play();
 				}, false);
 			}
+
+			var draggingScroll = false;
+			var volDraggingScroll = false;
+
+			//TODO :: Fetch data dynamically
+			var _shareTxt = "Curating the best of the web";
+			var _shareLnk = "http://www.modemediacorp.com/"
+
+			//Remove Controls from tag as creating custom controller
+			htmlMediaElement.removeAttribute('controls');
+
+			//Create Controllers
+			var contDiv = this.styledElement('div','mejs-conrtrols','',{
+				position:'relative',
+				top: '-4px',
+				width: htmlMediaElement.getAttribute('width')+ "px",
+				height: '30px',
+				backgroundColor: '#000'
+			});
+
+			var playPause = this.styledElement('div','playpause-button','mejs-playpause-button',{
+				position: 'relative',
+				cssFloat: 'left',
+				width: '20px',
+				height: '20px',
+				background: 'url("../build/GlamSprite.png") 0px 0',
+				padding: '0px',
+				cursor: 'pointer',
+				margin: '5px 5px'
+			});
+
+			var currentTime = this.styledElement('div','currentTime','mejs-time-current',{
+				position: 'relative',
+				cssFloat: 'left',
+				fontFamily: 'Helvetica',
+				color: '#777777',
+				fontSize: '13px',
+				borderRadius: '0px',
+				webkitBorderRadius:'0px',
+				margin: '8px 5px'		
+			});
+
+			var totalTime = this.styledElement('div','totalTime','mejs-time-total',{
+				position: 'relative',
+				cssFloat: 'right',
+				fontFamily: 'Helvetica',
+				color: '#777777',
+				fontSize: '13px',
+				borderRadius: '0px',
+				webkitBorderRadius:'0px',
+				margin: '8px 5px'		
+			});
+
+			var logoButton = this.styledElement('div','logoButton','mejs-logo',{
+				position: 'relative',
+				cssFloat: 'right',
+				minWidth: '48px',
+				height: '30px',
+				background: 'url("../build/GlamSprite.png") 0px -70px',
+				cursor: 'pointer',
+				padding: '0px'
+			});
+
+			var shareButton = this.styledElement('div','shareButton','mejs-share',{
+				position: 'relative',
+				cssFloat: 'right',
+				width: '20px',
+				height: '20px',
+				background: 'url("../build/GlamSprite.png") 0px -100px',
+				padding: '0px',
+				cursor: 'pointer',
+				margin: '5px 5px'	
+			});
+
+			var sharePane = this.styledElement('div','sharePane','mejs-share-pane',{
+				position: 'absolute',
+				width: '30px',
+				height: '120px',
+				backgroundColor: '#000000',
+				top: '-140px',
+				right: '-6px',
+				display: 'none'
+			});
+
+			var shareArrow = this.styledElement('div','shareArrow','mejs-share-pane-arrow',{
+				width: '0px',
+				height: '10px',
+				borderLeft: '10px solid transparent',
+				borderRight: '10px solid transparent',
+				borderTop: '10px solid #000000',
+				position: 'absolute',
+				top: '120px',
+				left: '5px'
+			});
+
+			var twbtn = this.styledElement('div','twbtn','mejs-twbtn',{
+				width: '18px',
+				height: '18px',
+				marginTop:'10px',
+				marginLeft:'6px',
+				cursor: 'pointer',
+				background: 'url(../build/tw.png)'
+			});
+
+			var gplusbtn = this.styledElement('div','gplusbtn','mejs-gplusbtn',{
+				width: '18px',
+				height: '18px',
+				marginTop:'10px',
+				marginLeft:'6px',
+				cursor: 'pointer',
+				background: 'url(../build/gplus.png)'
+			});
+
+			var pinbtn = this.styledElement('div','pinbtn','mejs-pinbtn',{
+				width: '18px',
+				height: '18px',
+				marginTop:'10px',
+				marginLeft:'6px',
+				cursor: 'pointer',
+				background: 'url(../build/pin.png)'
+			});
+
+			var fbbtn = this.styledElement('div','fbbtn','mejs-fbbtn',{
+				width: '18px',
+				height: '18px',
+				marginTop:'10px',
+				marginLeft:'6px',
+				cursor: 'pointer',
+				background: 'url(../build/fb.png)'
+			});
+
+			var volumePane = this.styledElement('div','volumePane','mejs-volume-pane',{
+				position: 'absolute',
+				width: '30px',
+				height: '120px',
+				backgroundColor: '#000000',
+				top: '-140px',
+				right: '-6px',
+				display: 'none'
+			});
+
+			var volumeArrow = this.styledElement('div','volumeArrow','mejs-volume-pane-arrow',{
+				width: '0px',
+				height: '10px',
+				borderLeft: '10px solid transparent',
+				borderRight: '10px solid transparent',
+				borderTop: '10px solid #000000',
+				position: 'absolute',
+				top: '120px',
+				left: '5px'
+			});
+
+			var audioOnOff = this.styledElement('div','audio','mejs-volume-button',{
+				position: 'relative',
+				cssFloat: 'right',
+				width: '20px',
+				height: '20px',
+				background: 'url("../build/GlamSprite.png") 0 -50px',
+				padding: '0px',
+				cursor: 'pointer',
+				margin: '5px'	
+			});
+
+			var fullscreenButton = this.styledElement('div','fullscreen','mejs-fs-button',{
+				position: 'relative',
+				cssFloat: 'right',
+				width: '20px',
+				height: '20px',
+				background: 'url("../build/GlamSprite.png") 0 -120px',
+				padding: '0px',
+				cursor: 'pointer',
+				margin: '5px 15px 5px 5px'	
+			});
+
+			var scrubBar = this.styledElement('div','scrubb','mejs-scrubb-bar',{
+				position: 'relative',
+				cssFloat: 'left',
+				width: (htmlMediaElement.getAttribute('width') - 30 - 45 - 45 - 50 - 30 - 30 - 30 -40) + "px", // PlayPause 30 || Current/Total Time 45 || Logo 50 || Share 30 || Audio 40
+				height: '20px',
+				margin: '5px'
+			});
+
+			var scrubTotal = this.styledElement('div','scrubbTotal','mejs-scrubb-bar-total',{
+				position: 'absolute',
+				top: '-2px',
+				width: '100%',
+				height: '3px',
+				padding: '0px',
+				backgroundColor: '#424242',
+				margin: '11px'
+			});
+
+			var scrubLoaded = this.styledElement('div','scrubbLoaded','mejs-scrubb-bar-loaded',{
+				position: 'absolute',
+				top: '-2px',
+				width: '100%',
+				height: '3px',
+				padding: '0px',
+				backgroundColor: '#606060',
+				margin: '11px'
+			});
+
+			var scrubProgress = this.styledElement('div','scrubProgress','mejs-scrubb-bar-prog',{
+				position: 'absolute',
+				top: '-2px',
+				width: '0%',
+				height: '3px',
+				padding: '0px',
+				backgroundColor: '#b7b7b7',
+				margin: '11px'
+			});
+
+			var scrubber = this.styledElement('div','scrubbbar','mejs-scrubber',{
+				position: 'absolute',
+				top: '-5px',
+				left: '0px',
+				width: '30px',
+				height: '30px',
+				background: 'url("../build/GlamSprite.png") 0px -20px',
+				padding: '0px',
+				margin: '0px',
+				cursor: 'pointer'
+			});
+
+			var volumeBar = this.styledElement('div','volumebar','mejs-volume-bar',{
+				position: 'relative',
+				cssFloat: 'left',
+				width: '20px',
+				height: '100px',
+				margin: '5px'
+			});
+
+			var volumeTotal = this.styledElement('div','volumeTotal','mejs-volume-bar-total',{
+				position: 'absolute',
+				width: '5px',
+				height: '100px',
+				padding: '0px',
+				backgroundColor: '#C6C6C6',
+				margin: '5px 8px'
+			});
+
+			var volumeProgress = this.styledElement('div','volumeProgress','mejs-volume-bar-prog',{
+				position: 'absolute',
+				width: '5px',
+				height: '0px',
+				padding: '0px',
+				backgroundColor: '#454545',
+				margin: '5px 8px'
+			});
+
+			var volScrubber = this.styledElement('div','volScrubber','mejs-volScrubber',{
+				position: 'absolute',
+				top: '-5px',
+				left: '-3px',
+				width: '30px',
+				height: '30px',
+				background: 'url("../build/GlamSprite.png") 0px -20px',
+				padding: '0px',
+				margin: '0px',
+				cursor: 'pointer'
+			});
+
+			logoButton.addEventListener("click",function(){
+				//window.open('http://www.modemediacorp.com');
+				openurl('http://www.modemediacorp.com');
+				mejs.MediaPluginBridge.fireEvent(mejs.id,'splashtrack','splash_code:"exit",splash_value:logo');
+			})
+
+			twbtn.addEventListener("click",function(){
+				var url = 'https://twitter.com/intent/tweet?&url=' +encodeURI(_shareLnk)+'&text='+encodeURI(_shareTxt); 
+				//window.open(url,'','width=685,height=420');
+				openurl(url,'','width=685,height=420');
+				mejs.MediaPluginBridge.fireEvent(mejs.id,'splashtrack','splash_code:"exit",splash_value:twitter');
+			})
+
+			gplusbtn.addEventListener("click",function(){
+				var url = 'https://plus.google.com/share?url='+encodeURI(_shareLnk);
+				//window.open(url,'','width=685,height=350');
+				openurl(url,'','width=685,height=350');
+				mejs.MediaPluginBridge.fireEvent(mejs.id,'splashtrack','splash_code:"exit",splash_value:gplus');
+			})
+
+			pinbtn.addEventListener("click",function(){
+				var url = 'http://pinterest.com/pin/create/button/?url='+encodeURI(_shareLnk)+'&media='+encodeURI(poster)+'&description='+encodeURI(_shareTxt); 
+				//window.open(url,'','width=750,height=630');
+				openurl(url,'','width=750,height=630');
+				mejs.MediaPluginBridge.fireEvent(mejs.id,'splashtrack','splash_code:"exit",splash_value:pinterest');
+			})
+
+			fbbtn.addEventListener("click",function(){
+				var url = 'https://www.facebook.com/sharer/sharer.php?u='+encodeURI(_shareLnk);
+				//window.open(url,'','width=685,height=350');
+				openurl(url,'','width=685,height=350');
+				mejs.MediaPluginBridge.fireEvent(mejs.id,'splashtrack','splash_code:"exit",splash_value:facebook');
+			})
+
+			function scrubbMoveEvent(e){
+				var rect = scrubBar.getBoundingClientRect();
+				
+				var currentPos = e.clientX - (rect.left+10);
+				var limitPos = (parseInt(scrubBar.style.width)-10);
+
+				if(currentPos>=limitPos)
+						currentPos = limitPos;
+				if(currentPos<=-5)
+						currentPos = -5;
+
+				var nPos = (currentPos/limitPos)*100;
+				if(nPos<0)
+					nPos = 0;
+
+				scrubber.style.left = (currentPos)+'px';
+				scrubProgress.style.width = (nPos) +'%';
+
+				htmlMediaElement.currentTime = htmlMediaElement.duration*nPos/100;
+			}
+
+			function scrubbEndEvent(e){
+				if(draggingScroll){
+					console.log("scrubbEndEvent");
+					draggingScroll = false;
+					scrubber.style.cursor = "pointer";
+					scrubBar.removeEventListener("mousemove",scrubbMoveEvent);
+					scrubBar.removeEventListener("mouseup",scrubbEndEvent);
+					scrubbMoveEvent(e);	
+				}
+			}
+
+			function volScrubbMoveEvent(e){
+				var rect = volumeBar.getBoundingClientRect();
+				console.log(e.clientY,rect.top);
+
+				var currentPos = e.clientY-rect.top-15;
+				var limitPos = (parseInt(volumeBar.style.height)-15);
+
+				if(currentPos>=limitPos)
+							currentPos = limitPos;
+					if(currentPos<=-5)
+							currentPos = -5;
+
+				var nPos = (currentPos/limitPos)*100;
+					if(nPos<0)
+						nPos = 0;
+
+				volScrubber.style.top = (currentPos)+'px';
+				volumeProgress.style.height = (nPos) +'%';
+				console.log(nPos);
+
+				htmlMediaElement.volume = (1- (currentPos/limitPos));
+			}
+
+			function volScrubbEndEvent(e){
+				if(volDraggingScroll){
+					volDraggingScroll = false;
+					volScrubber.style.cursor = "pointer";
+					volumeBar.removeEventListener("mousemove",volScrubbMoveEvent);
+					volumeBar.removeEventListener("mouseup",volScrubbEndEvent);
+					volScrubbMoveEvent(e);	
+				}
+			}
+
+			volumeBar.addEventListener("mousedown",function(){
+				volDraggingScroll = true;
+				volScrubber.style.cursor = "-webkit-grabbing";
+				volumeBar.addEventListener("mousemove",volScrubbMoveEvent);
+				volumeBar.addEventListener("mouseup",volScrubbEndEvent);
+			});
+
+			scrubBar.addEventListener("mousedown",function(){
+				draggingScroll = true;
+				scrubber.style.cursor = "-webkit-grabbing";
+				scrubBar.addEventListener("mousemove",scrubbMoveEvent);
+				scrubBar.addEventListener("mouseup",scrubbEndEvent);
+			});
+
+			//Scrub Bar
+			scrubBar.appendChild(scrubTotal);
+			scrubBar.appendChild(scrubLoaded);
+			scrubBar.appendChild(scrubProgress);
+			scrubBar.appendChild(scrubber);
+
+			//Share Pane
+			sharePane.appendChild(twbtn);
+			sharePane.appendChild(gplusbtn);
+			sharePane.appendChild(pinbtn);
+			sharePane.appendChild(fbbtn);
+			shareButton.appendChild(sharePane);
+			sharePane.appendChild(shareArrow);
+
+			//Volume Pane
+			audioOnOff.appendChild(volumePane);
+			volumePane.appendChild(volumeArrow);
+
+			volumePane.appendChild(volumeBar);
+			volumeBar.appendChild(volumeTotal);
+			volumeBar.appendChild(volumeProgress);
+			volumeBar.appendChild(volScrubber);
+
+
+			//controller
+			contDiv.appendChild(playPause);
+			contDiv.appendChild(currentTime);
+			contDiv.appendChild(scrubBar);
+			contDiv.appendChild(fullscreenButton);
+			contDiv.appendChild(audioOnOff);
+			contDiv.appendChild(shareButton);
+			contDiv.appendChild(logoButton);
+			contDiv.appendChild(totalTime);
+
+			function fsEvent(){
+				console.log('fsEvent');
+				
+				if(document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement){
+					htmlMediaElement.width = screen.width;
+					htmlMediaElement.height = (screen.height - 30);
+					contDiv.style.width = screen.width + 'px';
+					scrubBar.style.width = (screen.width - 30 - 45 - 45 - 50 - 30 - 30 - 30 -40) + 'px'; // PlayPause 30 || Current/Total Time 45 || Logo 50 || Share 30 || Audio 40
+					fullscreenButton.style.background = 'url("../build/GlamSprite.png") -66px -120px';
+				}else{
+					htmlMediaElement.width = oldW;
+					htmlMediaElement.height = oldH;
+					contDiv.style.width = oldW + 'px';
+					scrubBar.style.width = (oldW - 30 - 45 - 45 - 50 - 30 - 30 - 30 -40) + 'px'; // PlayPause 30 || Current/Total Time 45 || Logo 50 || Share 30 || Audio 40
+					fullscreenButton.style.background = 'url("../build/GlamSprite.png") -0px -120px';
+				}
+			}
+
+			document.addEventListener('webkitfullscreenchange',fsEvent);
+			document.addEventListener('mozfullscreenchange',fsEvent);
+			document.addEventListener('fullscreenchange',fsEvent);
+
+			fullscreenButton.addEventListener('click',function(){
+				if(document.webkitFullscreenElement === null){
+					oldH = htmlMediaElement.height;
+					oldW = htmlMediaElement.width;
+
+					if(htmlMediaElement.parentNode.requestFullscreen) {
+					    htmlMediaElement.parentNode.requestFullscreen();
+					} else if(htmlMediaElement.parentNode.mozRequestFullScreen) {
+					    htmlMediaElement.parentNode.mozRequestFullScreen();
+					} else if(htmlMediaElement.parentNode.webkitRequestFullscreen) {
+					    htmlMediaElement.parentNode.webkitRequestFullscreen();
+					} else if(htmlMediaElement.parentNode.msRequestFullscreen) {
+					    htmlMediaElement.parentNode.msRequestFullscreen();
+					}
+				}else{
+					if(document.exitFullscreen) {
+					    document.exitFullscreen();
+					} else if(document.mozCancelFullScreen) {
+					    document.mozCancelFullScreen();
+					} else if(document.webkitExitFullscreen) {
+					    document.webkitExitFullscreen();
+					}	
+				}
+			});
+
+			fullscreenButton.addEventListener("mouseover",function(){
+				if(document.webkitFullscreenElement === null){
+					this.style.background = 'url("../build/GlamSprite.png") -22px -120px';
+				}
+				else
+				{
+					this.style.background = 'url("../build/GlamSprite.png") -66px -120px';
+				}
+			});
+
+			fullscreenButton.addEventListener("mouseout",function(){
+				if(document.webkitFullscreenElement === null){
+					this.style.background = 'url("../build/GlamSprite.png") 0px -120px';
+				}
+				else
+				{
+					this.style.background = 'url("../build/GlamSprite.png") -44px -120px';
+				}
+			});
+
+			playPause.addEventListener('click',function(){
+				if(htmlMediaElement.paused){
+					htmlMediaElement.play();
+				}else{
+					htmlMediaElement.pause();
+				}
+				
+			},false);
+
+			playPause.addEventListener('mouseover',function(){
+				if(htmlMediaElement.paused){
+					this.style.background = 'url("../build/GlamSprite.png") -20px 0';
+				}else{
+					this.style.background = 'url("../build/GlamSprite.png") -60px 0';
+				}
+			});
+
+			playPause.addEventListener('mouseout',function(){
+				if(htmlMediaElement.paused){
+					this.style.background = 'url("../build/GlamSprite.png") 0 0';
+				}else{
+					this.style.background = 'url("../build/GlamSprite.png") -40px 0';	
+				}
+			});
+
+			logoButton.addEventListener("mouseover",function(){
+				this.style.background = 'url("../build/GlamSprite.png") -48px -70px';
+			});
+			
+			logoButton.addEventListener("mouseout",function(){
+				this.style.background = 'url("../build/GlamSprite.png") 0px -70px';
+			});
+
+			shareButton.addEventListener("mouseover",function(){
+				console.log('share over');
+				sharePane.style.display = 'block';
+				this.style.background = 'url("../build/GlamSprite.png") -22px -100px';
+			},false);
+			
+			shareButton.addEventListener("mouseout",function(){
+				console.log('share out');
+				sharePane.style.display = 'none';
+				this.style.background = 'url("../build/GlamSprite.png") 0px -100px';
+			},false);			
+
+			audioOnOff.addEventListener('click',function(){
+				/*if(htmlMediaElement.volume){
+					htmlMediaElement.volume = 0;
+				}else{
+					htmlMediaElement.volume = 1;
+				}*/
+			});
+
+			audioOnOff.addEventListener('mouseover',function(){
+				volumePane.style.display = 'block';
+				if(htmlMediaElement.volume){
+					this.style.background = 'url("../build/GlamSprite.png") -20px -50px';
+				}else{
+					this.style.background = 'url("../build/GlamSprite.png") -60px -50px';
+				}
+			});
+
+			audioOnOff.addEventListener('mouseout',function(){
+				volumePane.style.display = 'none';
+				if(htmlMediaElement.volume){
+					this.style.background = 'url("../build/GlamSprite.png") 0px -50px';
+				}else{
+					this.style.background = 'url("../build/GlamSprite.png") -40px -50px';
+				}
+			});
+			
+			htmlMediaElement.addEventListener('timeupdate',function(){
+				currentTime.innerHTML = mejs.Utility.secondsToTimeCode(htmlMediaElement.currentTime);
+				totalTime.innerHTML = mejs.Utility.secondsToTimeCode(htmlMediaElement.duration);
+
+				var nProgress = (htmlMediaElement.currentTime)/(htmlMediaElement.duration)*100;
+
+				if(!draggingScroll)
+					scrubProgress.style.width = (nProgress) +'%';
+					scrubber.style.left = (parseInt(scrubBar.style.width)-10)*nProgress/100+'px';
+
+			});
+
+			htmlMediaElement.addEventListener('volumechange',function(){
+				if(htmlMediaElement.volume){
+					audioOnOff.style.background = 'url("../build/GlamSprite.png") 0px -50px';
+				}else{
+					audioOnOff.style.background = 'url("../build/GlamSprite.png") -40px -50px';
+				}
+			});
+
+			htmlMediaElement.addEventListener('progress',function(e){
+				if(htmlMediaElement.buffered.length>0){
+					//console.log(htmlMediaElement.buffered.end(0));
+					var nProgress = (htmlMediaElement.buffered.end(0))/(htmlMediaElement.duration)*100;
+					scrubLoaded.style.width = (nProgress) +'%';
+				}
+			});
+
+			htmlMediaElement.addEventListener('play',function(){
+				playPause.style.background = 'url("../build/GlamSprite.png") -40px 0';
+			});
+
+			htmlMediaElement.addEventListener('pause',function(){
+				playPause.style.background = 'url("../build/GlamSprite.png") 0 0';
+			});
+
+			//To add Controllers node after Video Node
+			htmlMediaElement.parentNode.insertBefore(contDiv,htmlMediaElement.nextSibling);
 		
 			// add methods to native HTMLMediaElement
 			return this.updateNative(playback, options, autoplay, preload);
@@ -961,6 +1548,22 @@ mejs.HtmlMediaElementShim = {
 			
 			return this;
 		}
+	},
+
+	styledElement: function(el,id,cName,styles) {
+		if(typeof el == 'string') { el = document.createElement(el); }
+
+		el.id=id;
+		el.className=cName;
+
+		if(typeof styles == 'object') {
+			for(var s in styles) {
+				if(styles.hasOwnProperty(s)) {
+					el.style[s] = styles[s];
+				}
+			}
+		}
+		return el;
 	},
 	
 	determinePlayback: function(htmlMediaElement, options, supportsMediaTag, isMediaTag, src) {

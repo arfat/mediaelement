@@ -17,7 +17,9 @@
 
 <h3>Normal Video</h3>
 <br>
-<video width="360" height="233" id="player1" src="../media/echo-hereweare.mp4" type="video/mp4" controls="controls"></video>
+<div id="videoHTML5">
+<video width="480" height="270" id="player1" src="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4" controls="controls" poster="../media/echo-hereweare.jpg" autoplay></video>
+</div>
 
 <input type="button" id="pp" value="toggle" />
 <span id="time"></span>
@@ -33,7 +35,7 @@
 
 	
 <script>
-MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false','poster=http://splash.glam.com/prepublish/slideshow/500158904-poster.jpg'],mode: 'auto_plugin',success: function(me) {
+MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false','poster=http://splash.glam.com/prepublish/slideshow/500158904-poster.jpg'],mode: 'native',success: function(me) {
 	
 	//me.play();
 	
