@@ -371,7 +371,7 @@ mejs.HtmlMediaElementShim = {
 	},
 
 	getTypeFromFile: function(url) {
-		if(/(?:youtube\.com\/watch\?v=|youtu\.be\/)\w+/.test(url)) {
+		if(/(?:youtube\.com\/watch\?v=|youtu\.be\/)[^\?&"'>]+/.test(url)) {
 			return 'video/youtube';
 		} else {
 			url = url.split('?')[0];
@@ -523,7 +523,7 @@ mejs.HtmlMediaElementShim = {
 				break;
 
 			case 'youtube':
-				var videoId_match = /v=([\w]+)|youtu\.be\/([\w]+)/.exec(playback.url);
+				var videoId_match = /[\?&]v=([^\?&"'>]+)|youtu\.be\/([^\?&"'>]+)/.exec(playback.url);
 
 				if(!videoId_match || videoId_match.length < 2) {
 					options['error']('invalid YouTube url');
