@@ -929,6 +929,7 @@ mejs.HtmlMediaElementShim = {
 		// extend options
 		for (prop in o) {
 			options[prop] = o[prop];
+			//console.log("This "+options[prop]+ " "+prop);
 		}
 
 		// clean up attributes
@@ -954,12 +955,29 @@ mejs.HtmlMediaElementShim = {
 			var draggingScroll = false;
 			var volDraggingScroll = false;
 
-			//TODO :: Fetch data dynamically
+
 			var _shareTxt = "Curating the best of the web";
 			var _shareLnk = "http://www.modemediacorp.com/"
 
+			for(data in options['pluginVars']){
+				var lable = String(options['pluginVars'][data]).split("=")[0];
+
+				if(lable === 'share_txt'){
+					_shareTxt = String(options['pluginVars'][data]).split("=")[1];
+				}else if(lable === 'share_url'){
+					_shareLnk = String(options['pluginVars'][data]).split("=")[1];
+				}
+			}
+
+			console.log(_shareTxt,_shareLnk);
+
 			//Remove Controls from tag as creating custom controller
-			htmlMediaElement.removeAttribute('controls');
+			if(mejs.MediaFeatures.isiPad){
+				htmlMediaElement.createAttribute('controls');
+			}else{
+				htmlMediaElement.removeAttribute('controls');
+			}
+			
 
 			//Create Controllers
 			var contDiv = this.styledElement('div','mejs-conrtrols','',{
@@ -1051,6 +1069,7 @@ mejs.HtmlMediaElementShim = {
 				marginTop:'10px',
 				marginLeft:'6px',
 				cursor: 'pointer',
+				pointerEvents: 'none',
 				background: 'url(../build/tw.png)'
 			});
 
@@ -1060,6 +1079,7 @@ mejs.HtmlMediaElementShim = {
 				marginTop:'10px',
 				marginLeft:'6px',
 				cursor: 'pointer',
+				pointerEvents: 'none',
 				background: 'url(../build/gplus.png)'
 			});
 
@@ -1069,6 +1089,7 @@ mejs.HtmlMediaElementShim = {
 				marginTop:'10px',
 				marginLeft:'6px',
 				cursor: 'pointer',
+				pointerEvents: 'none',
 				background: 'url(../build/pin.png)'
 			});
 
@@ -1078,6 +1099,7 @@ mejs.HtmlMediaElementShim = {
 				marginTop:'10px',
 				marginLeft:'6px',
 				cursor: 'pointer',
+				pointerEvents: 'none',
 				background: 'url(../build/fb.png)'
 			});
 
@@ -1212,6 +1234,9 @@ mejs.HtmlMediaElementShim = {
 				cursor: 'pointer'
 			});
 
+			currentTime.innerHTML = '00:00';
+			totalTime.innerHTML = '00:00';
+
 			logoButton.addEventListener("click",function(){
 				//window.open('http://www.modemediacorp.com');
 				openurl('http://www.modemediacorp.com');
@@ -1224,7 +1249,7 @@ mejs.HtmlMediaElementShim = {
 				openurl(url,'','width=685,height=420');
 				mejs.MediaPluginBridge.fireEvent(mejs.id,'splashtrack','splash_code:"exit",splash_value:twitter');
 			})
-
+			
 			gplusbtn.addEventListener("click",function(){
 				var url = 'https://plus.google.com/share?url='+encodeURI(_shareLnk);
 				//window.open(url,'','width=685,height=350');
@@ -1280,8 +1305,6 @@ mejs.HtmlMediaElementShim = {
 
 			function volScrubbMoveEvent(e){
 				var rect = volumeBar.getBoundingClientRect();
-				console.log(e.clientY,rect.top);
-
 				var currentPos = e.clientY-rect.top-15;
 				var limitPos = (parseInt(volumeBar.style.height)-15);
 
@@ -1296,8 +1319,12 @@ mejs.HtmlMediaElementShim = {
 
 				volScrubber.style.top = (currentPos)+'px';
 				volumeProgress.style.height = (nPos) +'%';
-				console.log(nPos);
+				
+				if(currentPos<0){
+					currentPos = 0;
+				}
 
+				console.log(1- (currentPos/limitPos));
 				htmlMediaElement.volume = (1- (currentPos/limitPos));
 			}
 
@@ -1360,49 +1387,71 @@ mejs.HtmlMediaElementShim = {
 			contDiv.appendChild(totalTime);
 
 			function fsEvent(){
-				console.log('fsEvent');
-				
+				console.log("window.devicePixelRatio:  " + window.devicePixelRatio );
 				if(document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement){
-					htmlMediaElement.width = screen.width;
-					htmlMediaElement.height = (screen.height - 30);
-					contDiv.style.width = screen.width + 'px';
-					scrubBar.style.width = (screen.width - 30 - 45 - 45 - 50 - 30 - 30 - 30 -40) + 'px'; // PlayPause 30 || Current/Total Time 45 || Logo 50 || Share 30 || Audio 40
+					var scrWidth = window.innerWidth;
+					var scrHeight = window.innerHeight;
+					console.log('screen :' + scrWidth + 'x'+scrHeight);
+					htmlMediaElement.width = scrWidth;
+					htmlMediaElement.height = (scrHeight - 30);
+					contDiv.style.width = scrWidth + 'px';
+					scrubBar.style.width = (scrWidth - 30 - 45 - 45 - 50 - 30 - 30 - 30 -40) + 'px'; // PlayPause 30 || Current/Total Time 45 || Logo 50 || Share 30 || Audio 40
 					fullscreenButton.style.background = 'url("../build/GlamSprite.png") -66px -120px';
+					window.addEventListener('resize',updateFSLayout);
 				}else{
 					htmlMediaElement.width = oldW;
 					htmlMediaElement.height = oldH;
 					contDiv.style.width = oldW + 'px';
 					scrubBar.style.width = (oldW - 30 - 45 - 45 - 50 - 30 - 30 - 30 -40) + 'px'; // PlayPause 30 || Current/Total Time 45 || Logo 50 || Share 30 || Audio 40
 					fullscreenButton.style.background = 'url("../build/GlamSprite.png") -0px -120px';
+					window.removeEventListener('resize',updateFSLayout);
 				}
+			}
+
+			function updateFSLayout(){
+				console.log('updateFSLayout');
+				//This is hack to handle oriention while video is playing in fullscreen
+				setTimeout(function(){
+						fsEvent();
+				},600);
 			}
 
 			document.addEventListener('webkitfullscreenchange',fsEvent);
 			document.addEventListener('mozfullscreenchange',fsEvent);
 			document.addEventListener('fullscreenchange',fsEvent);
-
+			
 			fullscreenButton.addEventListener('click',function(){
-				if(document.webkitFullscreenElement === null){
+				if((document.webkitFullscreenElement === null || document.webkitFullscreenElement === undefined) &&
+				   (document.fullscreenElement === null || document.fullscreenElement === undefined) &&
+				   (document.mozFullScreenElement === null || document.mozFullScreenElement === undefined)){
+					
 					oldH = htmlMediaElement.height;
 					oldW = htmlMediaElement.width;
-
+					
 					if(htmlMediaElement.parentNode.requestFullscreen) {
 					    htmlMediaElement.parentNode.requestFullscreen();
 					} else if(htmlMediaElement.parentNode.mozRequestFullScreen) {
 					    htmlMediaElement.parentNode.mozRequestFullScreen();
 					} else if(htmlMediaElement.parentNode.webkitRequestFullscreen) {
-					    htmlMediaElement.parentNode.webkitRequestFullscreen();
+						htmlMediaElement.parentNode.webkitRequestFullscreen();
 					} else if(htmlMediaElement.parentNode.msRequestFullscreen) {
 					    htmlMediaElement.parentNode.msRequestFullscreen();
+					}else{
+						htmlMediaElement.parentNode.webkitRequestFullscreen();
 					}
+
 				}else{
+
+					mejs.MediaFeatures.cancelFullScreen();
+
+					/*console.log("else part");
 					if(document.exitFullscreen) {
 					    document.exitFullscreen();
 					} else if(document.mozCancelFullScreen) {
 					    document.mozCancelFullScreen();
 					} else if(document.webkitExitFullscreen) {
 					    document.webkitExitFullscreen();
-					}	
+					}	*/
 				}
 			});
 
