@@ -5,7 +5,6 @@
 	<title>HTML5 MediaElement</title>	
 	<script src="../build/jquery.js"></script>		
 	<script src="../build/mediaelement.js"></script>
-	<script src="testforfiles.js"></script>	
 </head>
 <body>
 
@@ -20,22 +19,24 @@
 <div id="videoHTML5">
 <video width="480" height="270" id="player1" src="http://www.quirksmode.org/html5/videos/big_buck_bunny.mp4" type="video/mp4" controls="controls" poster="../media/echo-hereweare.jpg" autoplay></video>
 </div>
-
+<br>
 <input type="button" id="pp" value="toggle" />
 <span id="time"></span>
 <br><br>
 <h3>Youtube Video</h3>
 <br>
+<!--
 <video width="360" height="233" id="ytplayer" src="https://www.youtube.com/watch?v=vJ5EA6EoqV8" type="video/youtube" controls="controls"></video>
 
 
 <input type="button" id="ytpp" value="toggle" />
 <span id="yttime"></span>
+-->
 	
 
 	
 <script>
-MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false','poster=http://splash.glam.com/prepublish/slideshow/500158904-poster.jpg'],mode: 'native',success: function(me) {
+MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false','poster=http://splash.glam.com/prepublish/slideshow/500158904-poster.jpg','share_txt=Share this too!!!','share_url=http://modemediacorp.com/?fromvar'],mode: 'native',success: function(me) {
 	
 	//me.play();
 	
@@ -51,7 +52,9 @@ MediaElement('player1', {plugins: ['flash'],pluginVars:['autoplay=false','poster
 	};
 
 }});
-MediaElement('ytplayer', {plugins: ['flash'], pluginVars:['autoplay=false','poster=http://i1.ytimg.com/vi/eOU1LsofSGw/mqdefault.jpg'],mode: 'auto_plugin',success: function(me) {
+
+/*
+MediaElement('ytplayer', {plugins: ['flash'], pluginVars:['autoplay=false','poster=http://i1.ytimg.com/vi/eOU1LsofSGw/mqdefault.jpg',],mode: 'auto_plugin',success: function(me) {
 	
 	//me.play();
 	
@@ -67,6 +70,7 @@ MediaElement('ytplayer', {plugins: ['flash'], pluginVars:['autoplay=false','post
 	};
 
 }});
+*/
 </script>
 
 </body>
